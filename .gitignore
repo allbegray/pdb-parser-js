@@ -1,5 +1,2 @@
 dist/
 node_modules/
-# Project exclude paths
-/test/titleParser.test.d.ts
-/test/titleParser.test.js
