@@ -10,7 +10,8 @@ declare global {
 
 String.prototype.extract = function (startIndex: number, endIndex?: number): string | null {
     try {
-        return this.substring(startIndex - 1, endIndex).trim()
+        const value = this.substring(startIndex - 1, endIndex).trim()
+        return value.isEmpty() ? null : value
     } catch (e) {
         console.warn(e)
         return null

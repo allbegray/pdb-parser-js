@@ -3,3 +3,9 @@ export interface Header {
     depDate: string | null
     idCode: string | null
 }
+
+export interface Obslte {
+    repDate: string | null
+    idCode: string | null
+    rIdCodes: string[]
+}

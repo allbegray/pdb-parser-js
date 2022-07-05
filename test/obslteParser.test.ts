@@ -1,18 +1,19 @@
-import {TitleParser} from "../src/parser/titleParser";
+import {ObslteParser} from "../src/parser/obslteParser";
 
-test('타이틀 추출', () => {
+test('OBSLTE 추출', () => {
 
     const pdb = `
 HEADER    TRANSFERASE/TRANSFERASE INHIBITOR       17-SEP-04   1XH6              
 TITLE     CRYSTAL STRUCTURES OF PROTEIN KINASE B SELECTIVE INHIBITORS           
-TITLE    2 IN COMPLEX WITH PROTEIN KINASE A AND MUTANTS                         
+TITLE    2 IN COMPLEX WITH PROTEIN KINASE A AND MUTANTS
+OBSLTE     12-AUG-15 4ZW4      5CST                         
 COMPND    MOL_ID: 1;`
 
-    const parser = new TitleParser()
+    const parser = new ObslteParser()
     pdb.split('\n').forEach(line => {
         parser.collect(line)
     })
-    const result: string | null = parser.parse()
+    const result = parser.parse()
 
     console.log(result)
 });

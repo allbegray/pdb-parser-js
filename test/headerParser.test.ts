@@ -8,11 +8,11 @@ TITLE     CRYSTAL STRUCTURES OF PROTEIN KINASE B SELECTIVE INHIBITORS
 TITLE    2 IN COMPLEX WITH PROTEIN KINASE A AND MUTANTS                         
 COMPND    MOL_ID: 1;`
 
-    const titleParser = new HeaderParser()
+    const parser = new HeaderParser()
     pdb.split('\n').forEach(line => {
-        titleParser.collect(line)
+        parser.collect(line)
     })
-    const header = titleParser.parse()
+    const result = parser.parse()
 
-    console.log(header)
+    console.log(result)
 });

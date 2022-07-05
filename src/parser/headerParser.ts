@@ -10,7 +10,7 @@ COLUMNS       DATA  TYPE     FIELD             DEFINITION
 
 import {AbstractParser} from "./parser";
 import '../extension/string';
-import {Header} from "../model/header";
+import {Header} from "../model/model";
 
 class HeaderParser extends AbstractParser<Header> {
 
