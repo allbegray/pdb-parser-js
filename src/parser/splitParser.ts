@@ -33,8 +33,7 @@ class SplitParser extends AbstractParser<string[]> {
             const idCodes = it.extract(12)
                 ?.split(' ')
                 ?.map(v => v.trim())
-                ?.filter(v => !v.isEmpty())
-            return (idCodes) ? idCodes : []
+            return idCodes ? idCodes : []
         })
     }
 }
