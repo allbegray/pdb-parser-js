@@ -30,10 +30,22 @@ class SplitParser extends AbstractParser<string[]> {
 
     parse(): string[] {
         return this.lines.flatMap(it => {
-            const idCodes = it.extract(12)
-                ?.split(' ')
-                ?.map(v => v.trim())
-            return idCodes ? idCodes : []
+            return [
+                it.extract(12, 15),
+                it.extract(17, 20),
+                it.extract(22, 25),
+                it.extract(27, 30),
+                it.extract(32, 35),
+                it.extract(37, 40),
+                it.extract(42, 45),
+                it.extract(47, 50),
+                it.extract(52, 55),
+                it.extract(57, 60),
+                it.extract(62, 65),
+                it.extract(67, 70),
+                it.extract(72, 75),
+                it.extract(77, 80),
+            ].filter(it => it) as string[]
         })
     }
 }
