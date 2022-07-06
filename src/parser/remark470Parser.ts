@@ -38,8 +38,7 @@ class Remark470Parser extends RemarkParser<MissingAtom[]> {
                 const iCode = line.extract(26, 26)
                 const atoms = line.extract(29)
                 missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
-            }
-            if (findNMR) {
+            } else if (findNMR) {
                 const resName = line.extract(16, 19)
                 const chainID = line.extract(20, 20)
                 const seqNum = line.extract(21, 24)
@@ -48,9 +47,9 @@ class Remark470Parser extends RemarkParser<MissingAtom[]> {
                 missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
             }
 
-            if (line.includes('RES  CSSEQI  ATOMS')) {
+            if (!findNonNMR && line.includes('RES  CSSEQI  ATOMS')) {
                 findNonNMR = true
-            } else if (line.includes('RES CSSEQI  ATOMS')) {
+            } else if (!findNMR && line.includes('RES CSSEQI  ATOMS')) {
                 findNMR = true
             }
         }
