@@ -29,11 +29,11 @@ class SsbondParser extends AbstractParser<Ssbond[]> {
     parse(): Ssbond[] {
         return this.lines.map(it => {
             const serNum = it.extract(8, 10)
-            // const CYS = it.extract(12, 14)
+            const resName1 = it.extract(12, 14)
             const chainID1 = it.extract(16, 16)
             const seqNum1 = it.extract(18, 21)
             const icode1 = it.extract(22, 22)
-            // const CYS = it.extract(26, 28)
+            const resName2 = it.extract(26, 28)
             const chainID2 = it.extract(30, 30)
             const seqNum2 = it.extract(32, 35)
             const icode2 = it.extract(36, 36)
@@ -43,9 +43,11 @@ class SsbondParser extends AbstractParser<Ssbond[]> {
 
             return {
                 serNum: serNum ? parseInt(serNum) : null,
+                resName1,
                 chainID1,
                 seqNum1: seqNum1 ? parseInt(seqNum1) : null,
                 icode1,
+                resName2,
                 chainID2,
                 seqNum2: seqNum2 ? parseInt(seqNum2) : null,
                 icode2,

@@ -32,9 +32,11 @@ export interface Hetatm extends Atom {
 
 export interface Ssbond {
     serNum: number | null
+    resName1: string | null
     chainID1: string | null
     seqNum1: number | null
     icode1: string | null
+    resName2: string | null
     chainID2: string | null
     seqNum2: number | null
     icode2: string | null
@@ -44,6 +46,20 @@ export interface Ssbond {
 }
 
 // not yet
+
+export interface Cispep {
+    serNum: number | null
+    pep1: string | null
+    chainID1: string | null
+    seqNum1: number | null
+    icode1: string | null
+    pep2: string | null
+    chainID2: string | null
+    seqNum2: number | null
+    icode2: string | null
+    modNum: number | null
+    measure: number | null
+}
 
 export interface Het {
     hetID: string | null
