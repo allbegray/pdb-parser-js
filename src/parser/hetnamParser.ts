@@ -26,7 +26,7 @@ class HetnamParser extends AbstractParser<Hetnam[]> {
                 text
             ] as [string, string | null]
         }).reduce((acc, [hetID, text]) => {
-            acc[hetID] = acc[hetID] || []
+            acc[hetID] = acc[hetID] ?? []
             acc[hetID].push(text)
             return acc
         }, {} as { [key: string]: (string | null)[] })

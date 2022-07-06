@@ -26,7 +26,7 @@ class HetsynParser extends AbstractParser<Hetsyn[]> {
                 hetSynonyms
             ] as [string, string | null]
         }).reduce((acc, [hetID, hetSynonyms]) => {
-            acc[hetID] = acc[hetID] || []
+            acc[hetID] = acc[hetID] ?? []
             acc[hetID].push(hetSynonyms)
             return acc
         }, {} as { [key: string]: (string | null)[] })
