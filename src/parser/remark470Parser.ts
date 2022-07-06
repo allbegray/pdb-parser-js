@@ -35,13 +35,12 @@ class Remark470Parser extends RemarkParser<MissingAtom[]> {
             iCode: string | null,
             atoms: string | null
         ) => MissingAtom = (resName, chainID, seqNum, iCode, atoms) => {
-            const _atoms = atoms?.split(' ')?.map(it => it.trim())?.filter(it => it)
             return {
                 resName,
                 chainID,
                 seqNum: seqNum ? parseInt(seqNum) : null,
                 iCode,
-                atoms: _atoms ? _atoms : [],
+                atoms: atoms?.split(' ')?.map(it => it.trim())?.filter(it => it) ?? []
             }
         }
 
