@@ -81,8 +81,6 @@ export interface MissingAtom {
     atoms: string[]
 }
 
-// not yet
-
 export interface Dbref {
     idCode: string | null
     chainID: string | null
@@ -98,6 +96,18 @@ export interface Dbref {
     dbseqEnd: number | null
     dbinsEnd: string | null
 }
+
+export interface Modres {
+    idCode: string | null
+    resName: string | null
+    chainID: string | null
+    seqNum: number | null
+    iCode: string | null
+    stdRes: string | null
+    comment: string | null
+}
+
+// not yet
 
 export interface Dbref1 {
     idCode: string | null
@@ -132,15 +142,6 @@ export interface Cispep {
     measure: number | null
 }
 
-export interface Modres {
-    idCode: string | null
-    resName: string | null
-    chainID: string | null
-    seqNum: number | null
-    iCode: string | null
-    stdRes: string | null
-    comment: string | null
-}
 
 export interface Seqadv {
     idCode: string | null
