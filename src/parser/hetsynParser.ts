@@ -21,13 +21,13 @@ class HetsynParser extends AbstractParser<Hetsyn[]> {
         const groupBy = this.lines.map(it => {
             const hetID = it.extract(12, 14)!
             const hetSynonyms = it.extract(16, 70)
-            return {
+            return [
                 hetID,
                 hetSynonyms
-            }
-        }).reduce((acc, next) => {
-            acc[next.hetID] = acc[next.hetID] || []
-            acc[next.hetID].push(next.hetSynonyms)
+            ] as [string, string | null]
+        }).reduce((acc, [hetID, hetSynonyms]) => {
+            acc[hetID] = acc[hetID] || []
+            acc[hetID].push(hetSynonyms)
             return acc
         }, {} as { [key: string]: (string | null)[] })
 

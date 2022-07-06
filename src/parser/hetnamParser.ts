@@ -21,13 +21,13 @@ class HetnamParser extends AbstractParser<Hetnam[]> {
         const groupBy = this.lines.map(it => {
             const hetID = it.extract(12, 14)!
             const text = it.extract(16, 70)
-            return {
+            return [
                 hetID,
                 text
-            }
-        }).reduce((acc, next) => {
-            acc[next.hetID] = acc[next.hetID] || []
-            acc[next.hetID].push(next.text)
+            ] as [string, string | null]
+        }).reduce((acc, [hetID, text]) => {
+            acc[hetID] = acc[hetID] || []
+            acc[hetID].push(text)
             return acc
         }, {} as { [key: string]: (string | null)[] })
 
