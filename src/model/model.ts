@@ -72,6 +72,15 @@ export interface MissingResidue {
     iCode: string | null
 }
 
+// remark 470
+export interface MissingAtom {
+    resName: string | null
+    chainID: string | null
+    seqNum: number | null
+    iCode: string | null
+    atoms: string[]
+}
+
 // not yet
 
 export interface Dbref {

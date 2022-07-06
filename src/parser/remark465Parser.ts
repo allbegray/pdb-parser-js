@@ -22,7 +22,7 @@ class Remark465Parser extends RemarkParser<MissingResidue[]> {
                     iCode,
                 })
             }
-            if (line.trim().endsWith('RES C SSSEQI')) {
+            if (line.includes('RES C SSSEQI')) {
                 find = true
             }
         }
