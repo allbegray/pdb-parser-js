@@ -50,6 +50,20 @@ export interface Hetsyn {
     hetSynonyms: string | null
 }
 
+export interface Het {
+    hetID: string | null
+    ChainID: string | null
+    seqNum: number | null
+    iCode: string | null
+    numHetAtoms: number | null
+    text: string | null
+}
+
+export interface Hetnam {
+    hetID: string | null
+    text: string | null
+}
+
 // not yet
 
 export interface Cispep {
@@ -64,20 +78,6 @@ export interface Cispep {
     icode2: string | null
     modNum: number | null
     measure: number | null
-}
-
-export interface Het {
-    hetID: string | null
-    ChainID: string | null
-    seqNum: number | null
-    iCode: string | null
-    numHetAtoms: number | null
-    text: string | null
-}
-
-export interface Hetnam {
-    hetID: string | null
-    text: string | null
 }
 
 export interface Modres {

@@ -5,7 +5,7 @@ interface Parser<T> {
 }
 
 abstract class AbstractParser<T> implements Parser<T> {
-    lines: string[] = [];
+    lines: string[] = []
 
     collect(line: string): any {
         if (this.match(line)) {

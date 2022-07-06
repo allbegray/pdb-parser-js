@@ -1,7 +1,7 @@
-import {HetatmParser} from "../src/parser/hetnamParser";
+import {HetatmParser} from "../src/parser/hetatmParser";
 import {Hetatm} from "../src/model/model";
 
-test('Hetatm 추출', () => {
+test('HETATM 추출', () => {
 
     const pdb = `
 HETATM 8237 MG    MG A1001      13.872  -2.555 -29.045  1.00 27.36          MG 
