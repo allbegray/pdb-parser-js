@@ -47,7 +47,7 @@ export interface Ssbond {
 
 export interface Hetsyn {
     hetID: string
-    hetSynonyms: string
+    hetSynonyms: string | null
 }
 
 // not yet
