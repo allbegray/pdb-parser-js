@@ -46,33 +46,37 @@ class Remark470Parser extends RemarkParser<MissingAtom[]> {
         }
 
         const missingAtoms: MissingAtom[] = []
-
-        let findNonNMR = false
-        let findNMR = false
+        let find: 'NonNMR' | 'NMR' | null = null
 
         for (let i in this.lines) {
             const line = this.lines[i]
 
-            if (findNonNMR) {
-                const resName = line.extract(16, 19)
-                const chainID = line.extract(21, 21)
-                const seqNum = line.extract(22, 25)
-                const iCode = line.extract(26, 26)
-                const atoms = line.extract(29)
-                missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
-            } else if (findNMR) {
-                const resName = line.extract(16, 19)
-                const chainID = line.extract(20, 20)
-                const seqNum = line.extract(21, 24)
-                const iCode = line.extract(25, 25)
-                const atoms = line.extract(28)
-                missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
-            }
-
-            if (!findNonNMR && line.includes('RES  CSSEQI  ATOMS')) {
-                findNonNMR = true
-            } else if (!findNMR && line.includes('RES CSSEQI  ATOMS')) {
-                findNMR = true
+            switch (find) {
+                case 'NonNMR': {
+                    const resName = line.extract(16, 19)
+                    const chainID = line.extract(21, 21)
+                    const seqNum = line.extract(22, 25)
+                    const iCode = line.extract(26, 26)
+                    const atoms = line.extract(29)
+                    missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
+                    break
+                }
+                case 'NMR': {
+                    const resName = line.extract(16, 19)
+                    const chainID = line.extract(20, 20)
+                    const seqNum = line.extract(21, 24)
+                    const iCode = line.extract(25, 25)
+                    const atoms = line.extract(28)
+                    missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
+                    break
+                }
+                default:
+                    if (line.includes('RES  CSSEQI  ATOMS')) {
+                        find = "NonNMR"
+                    } else if (line.includes('RES CSSEQI  ATOMS')) {
+                        find = "NMR"
+                    }
+                    break
             }
         }
         return missingAtoms
