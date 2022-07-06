@@ -22,8 +22,20 @@ import '../extension/string';
 import {AtomParser} from "./atomParser";
 
 class HetatmParser extends AtomParser {
+    excludeDummy: boolean;
+
+    constructor(excludeDummy: boolean = true) {
+        super();
+        this.excludeDummy = excludeDummy
+    }
 
     match(line: string): boolean {
+        if (this.excludeDummy) {
+            const resName = line.extract(18, 20)
+            if (resName == 'DUM') {
+                return false
+            }
+        }
         return line.startsWith('HETATM')
     }
 }
