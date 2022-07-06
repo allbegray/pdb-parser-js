@@ -25,10 +25,10 @@ class HetsynParser extends AbstractParser<Hetsyn[]> {
                 hetID,
                 hetSynonyms
             }
-        }).reduce((r, a) => {
-            r[a.hetID] = r[a.hetID] || [];
-            r[a.hetID].push(a.hetSynonyms);
-            return r;
+        }).reduce((acc, next) => {
+            acc[next.hetID] = acc[next.hetID] || []
+            acc[next.hetID].push(next.hetSynonyms)
+            return acc
         }, Object.create(null))
 
         const items: Hetsyn[] = []
