@@ -29,7 +29,7 @@ class HetsynParser extends AbstractParser<Hetsyn[]> {
             acc[next.hetID] = acc[next.hetID] || []
             acc[next.hetID].push(next.hetSynonyms)
             return acc
-        }, {} as { [index: string]: (string | null)[] })
+        }, {} as { [key: string]: (string | null)[] })
 
         const items: Hetsyn[] = []
         for (const key in groupBy) {

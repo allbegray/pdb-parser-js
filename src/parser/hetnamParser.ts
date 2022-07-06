@@ -29,7 +29,7 @@ class HetnamParser extends AbstractParser<Hetnam[]> {
             acc[next.hetID] = acc[next.hetID] || []
             acc[next.hetID].push(next.text)
             return acc
-        }, {} as { [index: string]: (string | null)[] })
+        }, {} as { [key: string]: (string | null)[] })
 
         const items: Hetnam[] = []
         for (const key in groupBy) {
