@@ -30,8 +30,6 @@ export interface Atom {
 export interface Hetatm extends Atom {
 }
 
-// not yet
-
 export interface Ssbond {
     serNum: number | null
     chainID1: string | null
@@ -44,6 +42,8 @@ export interface Ssbond {
     sym2: string | null
     Length: number | null
 }
+
+// not yet
 
 export interface Het {
     hetID: string | null
