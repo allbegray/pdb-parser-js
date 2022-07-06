@@ -64,6 +64,14 @@ export interface Hetnam {
     text: string | null
 }
 
+// remark 465
+export interface MissingResidue {
+    resName: string | null
+    chainID: string | null
+    seqNum: number | null
+    iCode: string | null
+}
+
 // not yet
 
 export interface Dbref {
