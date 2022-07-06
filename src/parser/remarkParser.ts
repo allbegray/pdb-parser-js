@@ -19,9 +19,7 @@ abstract class RemarkParser<T> extends AbstractParser<T> {
     match(line: string): boolean {
         if (line.startsWith('REMARK')) {
             const remarkNum = parseInt(line.extract(8, 10)!)
-            if (this.remarkNum == remarkNum) {
-                return true
-            }
+            if (this.remarkNum == remarkNum) return true
         }
         return false
     }

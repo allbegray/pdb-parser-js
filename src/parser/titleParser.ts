@@ -17,9 +17,7 @@ class TitleParser extends AbstractParser<string | null> {
 
     parse(): string | null {
         const title = this.lines.map(it => it.extract(11)).join(' ')
-        if (title.isBlank()) {
-            return null
-        }
+        if (title.isBlank()) return null
         return title
     }
 }

@@ -46,9 +46,10 @@ class Remark465Parser extends RemarkParser<MissingResidue[]> {
                     seqNum: seqNum ? parseInt(seqNum) : null,
                     iCode,
                 })
-            }
-            if (!find && line.includes('RES C SSSEQI')) {
-                find = true
+            } else {
+                if (line.includes('RES C SSSEQI')) {
+                    find = true
+                }
             }
         }
         return missingResidues
