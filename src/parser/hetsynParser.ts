@@ -33,13 +33,9 @@ class HetsynParser extends AbstractParser<Hetsyn[]> {
 
         const items: Hetsyn[] = []
         for (const key in groupBy) {
-            const list: string[] = groupBy[key]
             items.push({
                 hetID: key,
-                hetSynonyms: list.join(' ')
-                    .split(';')
-                    .map(it => it.trim())
-                    .filter(it => it)
+                hetSynonyms: groupBy[key].join(' ')
             })
         }
 
