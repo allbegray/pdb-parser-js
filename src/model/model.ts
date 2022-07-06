@@ -66,6 +66,41 @@ export interface Hetnam {
 
 // not yet
 
+export interface Dbref {
+    idCode: string | null
+    chainID: string | null
+    seqBegin: number | null
+    insertBegin: string | null
+    seqEnd: number | null
+    insertEnd: string | null
+    database: string | null
+    dbAccession: string | null
+    dbIdCode: string | null
+    dbseqBegin: number | null
+    idbnsBeg: string | null
+    dbseqEnd: number | null
+    dbinsEnd: string | null
+}
+
+export interface Dbref1 {
+    idCode: string | null
+    chainID: string | null
+    seqBegin: number | null
+    insertBegin: string | null
+    seqEnd: number | null
+    insertEnd: string | null
+    database: string | null
+    dbIdCode: string | null
+}
+
+export interface Dbref2 {
+    idCode: string | null
+    chainID: string | null
+    dbAccession: string | null
+    seqBegin: number | null
+    seqEnd: number | null
+}
+
 export interface Cispep {
     serNum: number | null
     pep1: string | null
