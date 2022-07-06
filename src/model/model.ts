@@ -45,6 +45,11 @@ export interface Ssbond {
     Length: number | null
 }
 
+export interface Hetsyn {
+    hetID: string | null
+    hetSynonyms: string[]
+}
+
 // not yet
 
 export interface Cispep {
