@@ -1,5 +1,4 @@
-import {HetatmParser} from "../src/parser/hetatmParser";
-import {Hetatm} from "../src/model/model";
+import {Hetatm, HetatmParser} from "../src/section/coordinate";
 
 test('HETATM 추출', () => {
 

@@ -1,4 +1,4 @@
-import {SeqresParser} from "../src/parser/seqresParser";
+import {SeqresParser} from "../src/section/primaryStructure";
 
 test('SEQRES 추출', () => {
 

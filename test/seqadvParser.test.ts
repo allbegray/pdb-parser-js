@@ -1,4 +1,4 @@
-import {SeqadvParser} from "../src/parser/seqadvParser";
+import {SeqadvParser} from "../src/section/primaryStructure";
 
 test('SEQADV 추출', () => {
 

@@ -1,6 +1,6 @@
-import {AtomParser} from "../src/parser/atomParser";
+import {AtomParser} from "../src/section/coordinate";
 
-test('Atom 추출', () => {
+test('ATOM 추출', () => {
 
     const pdb = `
 ATOM     32  N  AARG A  -3      11.281  86.699  94.383  0.50 35.88           N  

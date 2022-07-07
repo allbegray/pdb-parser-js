@@ -1,4 +1,4 @@
-import {ObslteParser} from "../src/parser/obslteParser";
+import {ObslteParser} from "../src/section/title";
 
 test('OBSLTE 추출', () => {
 

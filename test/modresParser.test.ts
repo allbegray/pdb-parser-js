@@ -1,4 +1,4 @@
-import {ModresParser} from "../src/parser/modresParser";
+import {ModresParser} from "../src/section/primaryStructure";
 
 test('MODRES 추출', () => {
 

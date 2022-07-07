@@ -1,4 +1,4 @@
-import {HetsynParser} from "../src/parser/hetsynParser";
+import {HetsynParser} from "../src/section/heterogen";
 
 test('HETSYN 추출', () => {
 

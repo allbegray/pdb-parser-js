@@ -1,4 +1,4 @@
-import {SsbondParser} from "../src/parser/ssbondParser";
+import {SsbondParser} from "../src/section/connectivityAnnotation";
 
 test('SSBOND 추출', () => {
 

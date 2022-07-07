@@ -1,4 +1,4 @@
-import {AuthorParser} from "../src/parser/authorParser";
+import {AuthorParser} from "../src/section/title";
 
 test('Author 추출', () => {
 

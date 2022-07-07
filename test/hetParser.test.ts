@@ -1,4 +1,4 @@
-import {HetParser} from "../src/parser/hetParser";
+import {HetParser} from "../src/section/heterogen";
 
 test('HET 추출', () => {
 

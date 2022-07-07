@@ -1,4 +1,4 @@
-import {Remark465Parser} from "../src/parser/remark465Parser";
+import {Remark465Parser} from "../src/section/title";
 
 test('REMARK 465 추출', () => {
 

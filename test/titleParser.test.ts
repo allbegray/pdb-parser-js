@@ -1,4 +1,4 @@
-import {TitleParser} from "../src/parser/titleParser";
+import {TitleParser} from "../src/section/title";
 
 test('타이틀 추출', () => {
 

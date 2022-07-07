@@ -1,4 +1,4 @@
-import {Remark470Parser} from "../src/parser/remark470Parser";
+import {Remark470Parser} from "../src/section/title";
 
 test('REMARK 470 non NMR 추출', () => {
     const pdb = `

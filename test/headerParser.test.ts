@@ -1,4 +1,4 @@
-import {HeaderParser} from "../src/parser/headerParser";
+import {HeaderParser} from "../src/section/title";
 
 test('헤더 추출', () => {
 

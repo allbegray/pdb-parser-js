@@ -1,4 +1,4 @@
-import {DbrefParser} from "../src/parser/dbrefParser";
+import {DbrefParser} from "../src/section/primaryStructure";
 
 test('DBREF 추출', () => {
 

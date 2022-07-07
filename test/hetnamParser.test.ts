@@ -1,4 +1,4 @@
-import {HetnamParser} from "../src/parser/hetnamParser";
+import {HetnamParser} from "../src/section/heterogen";
 
 test('HETNAM 추출', () => {
 

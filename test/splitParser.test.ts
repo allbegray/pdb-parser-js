@@ -1,4 +1,4 @@
-import {SplitParser} from "../src/parser/splitParser";
+import {SplitParser} from "../src/section/title";
 
 test('split 추출', () => {
 
