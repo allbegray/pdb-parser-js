@@ -107,8 +107,6 @@ export interface Modres {
     comment: string | null
 }
 
-// not yet
-
 export interface Dbref1 {
     idCode: string | null
     chainID: string | null
@@ -127,6 +125,8 @@ export interface Dbref2 {
     seqBegin: number | null
     seqEnd: number | null
 }
+
+// not yet
 
 export interface Cispep {
     serNum: number | null
