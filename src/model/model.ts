@@ -126,6 +126,13 @@ export interface Dbref2 {
     seqEnd: number | null
 }
 
+export interface Seqres {
+    serNum: number | null
+    chainID: string | null
+    numRes: number | null
+    resNames: string[]
+}
+
 // not yet
 
 export interface Cispep {
@@ -154,11 +161,4 @@ export interface Seqadv {
     dbRes: string | null
     dbSeq: number | null
     conflict: string | null
-}
-
-export interface Seqres {
-    serNum: string | null
-    chainID: string | null
-    numRes: number | null
-    resNames: string[]
 }
