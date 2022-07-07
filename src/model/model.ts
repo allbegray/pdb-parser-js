@@ -133,6 +133,19 @@ export interface Seqres {
     resNames: string[]
 }
 
+export interface Seqadv {
+    idCode: string | null
+    resName: string | null
+    chainID: string | null
+    seqNum: number | null
+    iCode: string | null
+    database: string | null
+    dbAccession: string | null
+    dbRes: string | null
+    dbSeq: number | null
+    conflict: string | null
+}
+
 // not yet
 
 export interface Cispep {
@@ -147,18 +160,4 @@ export interface Cispep {
     icode2: string | null
     modNum: number | null
     measure: number | null
-}
-
-
-export interface Seqadv {
-    idCode: string | null
-    resName: string | null
-    chainID: string | null
-    seqNum: number | null
-    iCode: string | null
-    database: string | null
-    dbAccession: string | null
-    dbRes: string | null
-    dbSeq: number | null
-    conflict: string | null
 }
