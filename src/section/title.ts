@@ -45,11 +45,11 @@ export interface MissingAtom {
  */
 export class HeaderParser extends AbstractParser<Header> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('HEADER')
     }
 
-    _parse(): Header {
+    protected _parse(): Header {
         const empty = {
             classification: null,
             depDate: null,
@@ -83,11 +83,11 @@ export class HeaderParser extends AbstractParser<Header> {
  */
 export class AuthorParser extends AbstractParser<string[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('AUTHOR')
     }
 
-    _parse(): string[] {
+    protected _parse(): string[] {
         return this.lines.map(it => it.extract(11))
             .filter(it => it)
             .join('')
@@ -115,11 +115,11 @@ export class AuthorParser extends AbstractParser<string[]> {
  */
 export class ObslteParser extends AbstractParser<Obslte[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('OBSLTE')
     }
 
-    _parse(): Obslte[] {
+    protected _parse(): Obslte[] {
         return this.lines.map(line => {
             const repDate = line.extract(12, 20)
             const idCode = line.extract(22, 25)
@@ -154,11 +154,11 @@ export class ObslteParser extends AbstractParser<Obslte[]> {
  */
 export class KeywdsParser extends AbstractParser<string[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('KEYWDS')
     }
 
-    _parse(): string[] {
+    protected _parse(): string[] {
         return this.lines.map(it => it.extract(11))
             .filter(it => it)
             .join('')
@@ -176,11 +176,11 @@ export class KeywdsParser extends AbstractParser<string[]> {
  */
 export class TitleParser extends AbstractParser<string | null> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('TITLE ')
     }
 
-    _parse(): string | null {
+    protected _parse(): string | null {
         const title = this.lines.map(it => it.extract(11)).join(' ')
         if (title.isBlank()) return null
         return title
@@ -198,11 +198,11 @@ export class TitleParser extends AbstractParser<string | null> {
  */
 export class ExpdtaParser extends AbstractParser<string[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('EXPDTA')
     }
 
-    _parse(): string[] {
+    protected _parse(): string[] {
         return this.lines.map(it => it.extract(11))
             .filter(it => it) as string[]
     }
@@ -230,11 +230,11 @@ export class ExpdtaParser extends AbstractParser<string[]> {
  */
 export class SplitParser extends AbstractParser<string[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('SPLIT ')
     }
 
-    _parse(): string[] {
+    protected _parse(): string[] {
         return this.lines.flatMap(line => {
             return [
                 line.extract(12, 15),
@@ -268,9 +268,9 @@ export class SplitParser extends AbstractParser<string[]> {
  */
 abstract class RemarkParser<T> extends AbstractParser<T> {
 
-    abstract readonly remarkNum: number
+    protected abstract readonly remarkNum: number
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         if (line.startsWith('REMARK')) {
             const remarkNum = this.toIntOrNull(line.extract(8, 10)!)
             if (this.remarkNum == remarkNum) return true
@@ -305,9 +305,9 @@ abstract class RemarkParser<T> extends AbstractParser<T> {
  * REMARK 465     RES C SSSEQI
  */
 export class Remark465Parser extends RemarkParser<MissingResidue[]> {
-    readonly remarkNum: number = 465
+    protected readonly remarkNum: number = 465
 
-    _parse(): MissingResidue[] {
+    protected _parse(): MissingResidue[] {
         const missingResidues: MissingResidue[] = []
         let find = false
         for (const line of this.lines) {
@@ -356,9 +356,9 @@ export class Remark465Parser extends RemarkParser<MissingResidue[]> {
  * REMARK 470     RES CSSEQI  ATOMS
  */
 export class Remark470Parser extends RemarkParser<MissingAtom[]> {
-    readonly remarkNum: number = 470
+    protected readonly remarkNum: number = 470
 
-    _parse(): MissingAtom[] {
+    protected _parse(): MissingAtom[] {
         const toMissingAtom: (
             resName: string | null,
             chainID: string | null,

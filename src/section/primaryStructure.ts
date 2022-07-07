@@ -94,11 +94,11 @@ export interface Seqres {
  */
 export class DbrefParser extends AbstractParser<Dbref[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('DBREF ')
     }
 
-    _parse(): Dbref[] {
+    protected _parse(): Dbref[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const chainID = line.extract(13, 13)
@@ -150,11 +150,11 @@ export class DbrefParser extends AbstractParser<Dbref[]> {
  */
 export class SeqadvParser extends AbstractParser<Seqadv[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('SEQADV')
     }
 
-    _parse(): Seqadv[] {
+    protected _parse(): Seqadv[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const resName = line.extract(13, 15)
@@ -197,11 +197,11 @@ export class SeqadvParser extends AbstractParser<Seqadv[]> {
  */
 export class ModresParser extends AbstractParser<Modres[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('MODRES')
     }
 
-    _parse(): Modres[] {
+    protected _parse(): Modres[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const resName = line.extract(13, 15)
@@ -244,11 +244,11 @@ export class ModresParser extends AbstractParser<Modres[]> {
  */
 export class Dbref1Parser extends AbstractParser<Dbref1[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('DBREF1')
     }
 
-    _parse(): Dbref1[] {
+    protected _parse(): Dbref1[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const chainID = line.extract(13, 13)
@@ -288,11 +288,11 @@ export class Dbref1Parser extends AbstractParser<Dbref1[]> {
  */
 export class Dbref2Parser extends AbstractParser<Dbref2[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('DBREF2')
     }
 
-    _parse(): Dbref2[] {
+    protected _parse(): Dbref2[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const chainID = line.extract(13, 13)
@@ -339,11 +339,11 @@ export class Dbref2Parser extends AbstractParser<Dbref2[]> {
  */
 export class SeqresParser extends AbstractParser<Seqres[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('SEQRES')
     }
 
-    _parse(): Seqres[] {
+    protected _parse(): Seqres[] {
         return this.lines.map(line => {
             const serNum = line.extract(8, 10)
             const chainID = line.extract(12, 12)

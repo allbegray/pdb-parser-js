@@ -17,11 +17,11 @@ export interface Conect {
  */
 export class MasterParser extends AbstractParser<Conect[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('CONECT')
     }
 
-    _parse(): Conect[] {
+    protected _parse(): Conect[] {
         return this.lines.map(line => {
             const atomSeqNum = line.extract(7, 11)
             const bondedAtomSeqNums = [

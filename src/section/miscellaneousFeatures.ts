@@ -55,11 +55,11 @@ export interface Residue {
  */
 export class SiteParser extends AbstractParser<Site[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('SITE  ')
     }
 
-    _parse(): Site[] {
+    protected _parse(): Site[] {
         const toResidue: (
             resName: string | null,
             chainID: string | null,

@@ -54,11 +54,11 @@ export interface Cispep {
  */
 export class SsbondParser extends AbstractParser<Ssbond[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('SSBOND')
     }
 
-    _parse(): Ssbond[] {
+    protected _parse(): Ssbond[] {
         return this.lines.map(line => {
             const serNum = line.extract(8, 10)
             const resName1 = line.extract(12, 14)
@@ -109,11 +109,11 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
  */
 export class CispepParser extends AbstractParser<Cispep[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('CISPEP')
     }
 
-    _parse(): Cispep[] {
+    protected _parse(): Cispep[] {
         return this.lines.map(line => {
             const serNum = line.extract(8, 10)
             const pep1 = line.extract(12, 14)

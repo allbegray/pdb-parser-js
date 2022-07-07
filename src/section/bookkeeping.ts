@@ -40,11 +40,11 @@ export interface End {
  */
 export class MasterParser extends AbstractParser<Master | null> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('MASTER')
     }
 
-    _parse(): Master | null {
+    protected _parse(): Master | null {
         if (this.lines.length == 0)
             return null
         const line = this.lines[0]

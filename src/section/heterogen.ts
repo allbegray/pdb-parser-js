@@ -39,11 +39,11 @@ export interface Formul {
  */
 export class HetParser extends AbstractParser<Het[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('HET   ')
     }
 
-    _parse(): Het[] {
+    protected _parse(): Het[] {
         return this.lines.map(line => {
             const hetID = line.extract(8, 10)
             const ChainID = line.extract(13, 13)
@@ -74,11 +74,11 @@ export class HetParser extends AbstractParser<Het[]> {
  */
 export class HetnamParser extends AbstractParser<Hetnam[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('HETNAM')
     }
 
-    _parse(): Hetnam[] {
+    protected _parse(): Hetnam[] {
         const groupBy = this.lines.map(line => {
             const hetID = line.extract(12, 14)!
             const text = line.extract(16, 70)
@@ -115,11 +115,11 @@ export class HetnamParser extends AbstractParser<Hetnam[]> {
  */
 export class HetsynParser extends AbstractParser<Hetsyn[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('HETSYN')
     }
 
-    _parse(): Hetsyn[] {
+    protected _parse(): Hetsyn[] {
         const groupBy = this.lines.map(line => {
             const hetID = line.extract(12, 14)!
             const hetSynonyms = line.extract(16, 70)

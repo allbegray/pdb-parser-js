@@ -42,11 +42,11 @@ export interface Hetatm extends Atom {
  */
 export class AtomParser extends AbstractParser<Atom[]> {
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         return line.startsWith('ATOM  ')
     }
 
-    _parse(): Atom[] {
+    protected _parse(): Atom[] {
         return this.lines.map(line => {
             const serial = line.extract(7, 11)
             const name = line.extract(13, 16)
@@ -103,14 +103,14 @@ export class AtomParser extends AbstractParser<Atom[]> {
  * 79 - 80       LString(2)     charge        Charge on the atom.
  */
 export class HetatmParser extends AtomParser {
-    excludeDummy: boolean
+    protected excludeDummy: boolean
 
-    constructor(excludeDummy: boolean = true) {
+    protected constructor(excludeDummy: boolean = true) {
         super()
         this.excludeDummy = excludeDummy
     }
 
-    match(line: string): boolean {
+    protected match(line: string): boolean {
         if (this.excludeDummy) {
             const resName = line.extract(18, 20)
             if (resName == 'DUM') return false
