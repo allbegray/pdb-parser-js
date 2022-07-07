@@ -1,5 +1,5 @@
 interface Parser<T> {
-    collect(line: string): any
+    collect(line: string): void
 
     parse(): T
 }
@@ -7,7 +7,7 @@ interface Parser<T> {
 abstract class AbstractParser<T> implements Parser<T> {
     protected lines: string[] = []
 
-    collect(line: string | string[]): any {
+    collect(line: string | string[]): void {
         if (Array.isArray(line)) {
             for (const l of line) {
                 if (this.match(l)) {
