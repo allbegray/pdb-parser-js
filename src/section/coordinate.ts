@@ -46,7 +46,7 @@ export class AtomParser extends AbstractParser<Atom[]> {
         return line.startsWith('ATOM  ')
     }
 
-    parse(): Atom[] {
+    _parse(): Atom[] {
         return this.lines.map(line => {
             const serial = line.extract(7, 11)
             const name = line.extract(13, 16)

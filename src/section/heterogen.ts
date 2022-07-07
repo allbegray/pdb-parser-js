@@ -43,7 +43,7 @@ export class HetParser extends AbstractParser<Het[]> {
         return line.startsWith('HET   ')
     }
 
-    parse(): Het[] {
+    _parse(): Het[] {
         return this.lines.map(line => {
             const hetID = line.extract(8, 10)
             const ChainID = line.extract(13, 13)
@@ -78,7 +78,7 @@ export class HetnamParser extends AbstractParser<Hetnam[]> {
         return line.startsWith('HETNAM')
     }
 
-    parse(): Hetnam[] {
+    _parse(): Hetnam[] {
         const groupBy = this.lines.map(line => {
             const hetID = line.extract(12, 14)!
             const text = line.extract(16, 70)
@@ -119,7 +119,7 @@ export class HetsynParser extends AbstractParser<Hetsyn[]> {
         return line.startsWith('HETSYN')
     }
 
-    parse(): Hetsyn[] {
+    _parse(): Hetsyn[] {
         const groupBy = this.lines.map(line => {
             const hetID = line.extract(12, 14)!
             const hetSynonyms = line.extract(16, 70)

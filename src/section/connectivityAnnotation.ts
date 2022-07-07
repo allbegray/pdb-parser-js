@@ -58,7 +58,7 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
         return line.startsWith('SSBOND')
     }
 
-    parse(): Ssbond[] {
+    _parse(): Ssbond[] {
         return this.lines.map(line => {
             const serNum = line.extract(8, 10)
             const resName1 = line.extract(12, 14)
@@ -113,7 +113,7 @@ export class CispepParser extends AbstractParser<Cispep[]> {
         return line.startsWith('CISPEP')
     }
 
-    parse(): Cispep[] {
+    _parse(): Cispep[] {
         return this.lines.map(line => {
             const serNum = line.extract(8, 10)
             const pep1 = line.extract(12, 14)

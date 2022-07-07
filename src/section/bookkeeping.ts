@@ -44,7 +44,7 @@ export class MasterParser extends AbstractParser<Master | null> {
         return line.startsWith('MASTER')
     }
 
-    parse(): Master | null {
+    _parse(): Master | null {
         if (this.lines.length == 0)
             return null
         const line = this.lines[0]

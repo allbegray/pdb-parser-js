@@ -98,7 +98,7 @@ export class DbrefParser extends AbstractParser<Dbref[]> {
         return line.startsWith('DBREF ')
     }
 
-    parse(): Dbref[] {
+    _parse(): Dbref[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const chainID = line.extract(13, 13)
@@ -154,7 +154,7 @@ export class SeqadvParser extends AbstractParser<Seqadv[]> {
         return line.startsWith('SEQADV')
     }
 
-    parse(): Seqadv[] {
+    _parse(): Seqadv[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const resName = line.extract(13, 15)
@@ -201,7 +201,7 @@ export class ModresParser extends AbstractParser<Modres[]> {
         return line.startsWith('MODRES')
     }
 
-    parse(): Modres[] {
+    _parse(): Modres[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const resName = line.extract(13, 15)
@@ -248,7 +248,7 @@ export class Dbref1Parser extends AbstractParser<Dbref1[]> {
         return line.startsWith('DBREF1')
     }
 
-    parse(): Dbref1[] {
+    _parse(): Dbref1[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const chainID = line.extract(13, 13)
@@ -292,7 +292,7 @@ export class Dbref2Parser extends AbstractParser<Dbref2[]> {
         return line.startsWith('DBREF2')
     }
 
-    parse(): Dbref2[] {
+    _parse(): Dbref2[] {
         return this.lines.map(line => {
             const idCode = line.extract(8, 11)
             const chainID = line.extract(13, 13)
@@ -343,7 +343,7 @@ export class SeqresParser extends AbstractParser<Seqres[]> {
         return line.startsWith('SEQRES')
     }
 
-    parse(): Seqres[] {
+    _parse(): Seqres[] {
         return this.lines.map(line => {
             const serNum = line.extract(8, 10)
             const chainID = line.extract(12, 12)

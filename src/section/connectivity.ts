@@ -21,7 +21,7 @@ export class MasterParser extends AbstractParser<Conect[]> {
         return line.startsWith('CONECT')
     }
 
-    parse(): Conect[] {
+    _parse(): Conect[] {
         return this.lines.map(line => {
             const atomSeqNum = line.extract(7, 11)
             const bondedAtomSeqNums = [

@@ -2,9 +2,9 @@ import '../extension/string';
 import {AbstractParser} from "../parser";
 
 export interface Site {
-    seqNum: number | null
-    siteID: string | null
-    numRes: number | null
+    seqNum: number
+    siteID: string
+    numRes: number
     residues: Residue[]
 }
 
@@ -59,7 +59,7 @@ export class SiteParser extends AbstractParser<Site[]> {
         return line.startsWith('SITE  ')
     }
 
-    parse(): Site[] {
+    _parse(): Site[] {
         const toResidue: (
             resName: string | null,
             chainID: string | null,
@@ -103,9 +103,9 @@ export class SiteParser extends AbstractParser<Site[]> {
             const iCode4 = line.extract(61, 61)
 
             return {
-                seqNum: this.toIntOrNull(seqNum),
-                siteID,
-                numRes: this.toIntOrNull(numRes),
+                seqNum: this.toIntOrNull(seqNum)!,
+                siteID: siteID!,
+                numRes: this.toIntOrNull(numRes)!,
                 residues: [
                     toResidue(resName1, chainID1, seq1, iCode1),
                     toResidue(resName2, chainID2, seq2, iCode2),
@@ -114,5 +114,24 @@ export class SiteParser extends AbstractParser<Site[]> {
                 ].filter(it => it) as Residue[]
             }
         })
+    }
+
+    protected validate(t: Site[]): boolean {
+        const groupBy = t.reduce((acc, site) => {
+            const key = site.siteID + "_" + site.numRes
+            acc[key] = acc[key] ?? []
+            acc[key].push(...site.residues)
+            return acc
+        }, {} as { [key: string]: Residue[] })
+
+        for (const key in groupBy) {
+            const [siteID, numRes] = key.split('_') as [string, string]
+            const length = groupBy[key].length
+            if (parseInt(numRes) != length) {
+                console.error(`"${siteID}" length error. expected : ${numRes}, actual : ${length}`)
+                return false
+            }
+        }
+        return true
     }
 }

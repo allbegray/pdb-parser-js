@@ -49,7 +49,7 @@ export class HeaderParser extends AbstractParser<Header> {
         return line.startsWith('HEADER')
     }
 
-    parse(): Header {
+    _parse(): Header {
         const empty = {
             classification: null,
             depDate: null,
@@ -87,7 +87,7 @@ export class AuthorParser extends AbstractParser<string[]> {
         return line.startsWith('AUTHOR')
     }
 
-    parse(): string[] {
+    _parse(): string[] {
         return this.lines.map(it => it.extract(11))
             .filter(it => it)
             .join('')
@@ -119,7 +119,7 @@ export class ObslteParser extends AbstractParser<Obslte[]> {
         return line.startsWith('OBSLTE')
     }
 
-    parse(): Obslte[] {
+    _parse(): Obslte[] {
         return this.lines.map(line => {
             const repDate = line.extract(12, 20)
             const idCode = line.extract(22, 25)
@@ -158,7 +158,7 @@ export class KeywdsParser extends AbstractParser<string[]> {
         return line.startsWith('KEYWDS')
     }
 
-    parse(): string[] {
+    _parse(): string[] {
         return this.lines.map(it => it.extract(11))
             .filter(it => it)
             .join('')
@@ -180,7 +180,7 @@ export class TitleParser extends AbstractParser<string | null> {
         return line.startsWith('TITLE ')
     }
 
-    parse(): string | null {
+    _parse(): string | null {
         const title = this.lines.map(it => it.extract(11)).join(' ')
         if (title.isBlank()) return null
         return title
@@ -202,7 +202,7 @@ export class ExpdtaParser extends AbstractParser<string[]> {
         return line.startsWith('EXPDTA')
     }
 
-    parse(): string[] {
+    _parse(): string[] {
         return this.lines.map(it => it.extract(11))
             .filter(it => it) as string[]
     }
@@ -234,7 +234,7 @@ export class SplitParser extends AbstractParser<string[]> {
         return line.startsWith('SPLIT ')
     }
 
-    parse(): string[] {
+    _parse(): string[] {
         return this.lines.flatMap(line => {
             return [
                 line.extract(12, 15),
@@ -307,7 +307,7 @@ abstract class RemarkParser<T> extends AbstractParser<T> {
 export class Remark465Parser extends RemarkParser<MissingResidue[]> {
     readonly remarkNum: number = 465
 
-    parse(): MissingResidue[] {
+    _parse(): MissingResidue[] {
         const missingResidues: MissingResidue[] = []
         let find = false
         for (const line of this.lines) {
@@ -358,7 +358,7 @@ export class Remark465Parser extends RemarkParser<MissingResidue[]> {
 export class Remark470Parser extends RemarkParser<MissingAtom[]> {
     readonly remarkNum: number = 470
 
-    parse(): MissingAtom[] {
+    _parse(): MissingAtom[] {
         const toMissingAtom: (
             resName: string | null,
             chainID: string | null,
