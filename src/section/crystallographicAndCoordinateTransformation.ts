@@ -1,3 +1,6 @@
+import '../extension/string';
+import {AbstractParser} from "../parser";
+
 // TODO
 export interface CRYST1 {
 

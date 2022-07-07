@@ -1,3 +1,5 @@
+// 100%
+import '../extension/string';
 import {AbstractParser} from "../parser";
 
 export interface Conect {
@@ -15,7 +17,7 @@ export interface Conect {
  * 22 - 26        Integer        serial       Serial number of bonded atom
  * 27 - 31        Integer        serial       Serial number of bonded atom
  */
-export class MasterParser extends AbstractParser<Conect[]> {
+export class ConectParser extends AbstractParser<Conect[]> {
 
     protected match(line: string): boolean {
         return line.startsWith('CONECT')

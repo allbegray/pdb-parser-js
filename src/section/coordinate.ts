@@ -1,6 +1,15 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 
+export interface Model {
+}
+
+export interface Anisou {
+}
+
+export interface Hetatm extends Atom {
+}
+
 export interface Atom {
     serial: number | null
     name: string | null
@@ -18,8 +27,12 @@ export interface Atom {
     charge: string | null
 }
 
-export interface Hetatm extends Atom {
+export interface Ter {
 }
+
+export interface Endmdl {
+}
+
 
 /***
  * COLUMNS        DATA  TYPE    FIELD        DEFINITION

@@ -1,3 +1,4 @@
+// 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
 
