@@ -268,7 +268,7 @@ abstract class RemarkParser<T> extends AbstractParser<T> {
 
     match(line: string): boolean {
         if (line.startsWith('REMARK')) {
-            const remarkNum = parseInt(line.extract(8, 10)!)
+            const remarkNum = this.toIntOrNull(line.extract(8, 10)!)
             if (this.remarkNum == remarkNum) return true
         }
         return false
@@ -315,7 +315,7 @@ export class Remark465Parser extends RemarkParser<MissingResidue[]> {
                 missingResidues.push({
                     resName,
                     chainID,
-                    seqNum: seqNum ? parseInt(seqNum) : null,
+                    seqNum: this.toIntOrNull(seqNum),
                     iCode,
                 })
             } else {
@@ -364,7 +364,7 @@ export class Remark470Parser extends RemarkParser<MissingAtom[]> {
             return {
                 resName,
                 chainID,
-                seqNum: seqNum ? parseInt(seqNum) : null,
+                seqNum: this.toIntOrNull(seqNum),
                 iCode,
                 atoms: atoms?.split(' ')?.map(it => it.trim())?.filter(it => it) ?? []
             }

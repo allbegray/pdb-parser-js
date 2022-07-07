@@ -74,18 +74,18 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
             const Length = it.extract(74, 78)
 
             return {
-                serNum: serNum ? parseInt(serNum) : null,
+                serNum: this.toIntOrNull(serNum),
                 resName1,
                 chainID1,
-                seqNum1: seqNum1 ? parseInt(seqNum1) : null,
+                seqNum1: this.toIntOrNull(seqNum1),
                 icode1,
                 resName2,
                 chainID2,
-                seqNum2: seqNum2 ? parseInt(seqNum2) : null,
+                seqNum2: this.toIntOrNull(seqNum2),
                 icode2,
                 sym1,
                 sym2,
-                Length: Length ? parseFloat(Length) : null,
+                Length: this.toFloatOrNull(Length),
             }
         })
     }
@@ -127,17 +127,17 @@ export class CispepParser extends AbstractParser<Cispep[]> {
             const modNum = it.extract(44, 46)
             const measure = it.extract(54, 59)
             return {
-                serNum: serNum ? parseInt(serNum) : null,
+                serNum: this.toIntOrNull(serNum),
                 pep1,
                 chainID1,
-                seqNum1: seqNum1 ? parseInt(seqNum1) : null,
+                seqNum1: this.toIntOrNull(seqNum1),
                 icode1,
                 pep2,
                 chainID2,
-                seqNum2: seqNum2 ? parseInt(seqNum2) : null,
+                seqNum2: this.toIntOrNull(seqNum2),
                 icode2,
-                modNum: modNum ? parseInt(modNum) : null,
-                measure: measure ? parseFloat(measure) : null,
+                modNum: this.toIntOrNull(modNum),
+                measure: this.toFloatOrNull(measure),
             }
         })
     }

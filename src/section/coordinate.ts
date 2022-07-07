@@ -63,18 +63,18 @@ export class AtomParser extends AbstractParser<Atom[]> {
             const element = it.extract(77, 78)
             const charge = it.extract(79, 80)
             return {
-                serial: serial ? parseInt(serial) : null,
+                serial: this.toIntOrNull(serial),
                 name,
                 altLoc,
                 resName,
                 chainID,
-                resSeq: resSeq ? parseInt(resSeq) : null,
+                resSeq: this.toIntOrNull(resSeq),
                 iCode,
-                x: x ? parseFloat(x) : null,
-                y: y ? parseFloat(y) : null,
-                z: z ? parseFloat(z) : null,
-                occupancy: occupancy ? parseFloat(occupancy) : null,
-                tempFactor: tempFactor ? parseFloat(tempFactor) : null,
+                x: this.toFloatOrNull(x),
+                y: this.toFloatOrNull(y),
+                z: this.toFloatOrNull(z),
+                occupancy: this.toFloatOrNull(occupancy),
+                tempFactor: this.toFloatOrNull(tempFactor),
                 element,
                 charge,
             }

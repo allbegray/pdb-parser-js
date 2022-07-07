@@ -54,9 +54,9 @@ export class HetParser extends AbstractParser<Het[]> {
             return {
                 hetID,
                 ChainID,
-                seqNum: seqNum ? parseInt(seqNum) : null,
+                seqNum: this.toIntOrNull(seqNum),
                 iCode,
-                numHetAtoms: numHetAtoms ? parseInt(numHetAtoms) : null,
+                numHetAtoms: this.toIntOrNull(numHetAtoms),
                 text,
             }
         })

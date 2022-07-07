@@ -1,6 +1,6 @@
 declare global {
     interface String {
-        extract(startIndex: number, endIndex?: number): string | null;
+        extract(startIndex: number, endIndex?: number): string | null
 
         isEmpty(): boolean
 
