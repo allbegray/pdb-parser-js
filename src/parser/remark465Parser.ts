@@ -33,8 +33,7 @@ class Remark465Parser extends RemarkParser<MissingResidue[]> {
     parse(): MissingResidue[] {
         const missingResidues: MissingResidue[] = []
         let find = false
-        for (let i in this.lines) {
-            const line = this.lines[i]
+        for (const line of this.lines) {
             if (find) {
                 const resName = line.extract(16, 19)
                 const chainID = line.extract(20, 20)

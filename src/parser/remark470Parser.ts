@@ -46,10 +46,7 @@ class Remark470Parser extends RemarkParser<MissingAtom[]> {
 
         const missingAtoms: MissingAtom[] = []
         let find: 'NonNMR' | 'NMR' | null = null
-
-        for (let i in this.lines) {
-            const line = this.lines[i]
-
+        for (const line of this.lines) {
             switch (find) {
                 case 'NonNMR': {
                     const resName = line.extract(16, 19)
