@@ -47,21 +47,22 @@ export class AtomParser extends AbstractParser<Atom[]> {
     }
 
     parse(): Atom[] {
-        return this.lines.map(it => {
-            const serial = it.extract(7, 11)
-            const name = it.extract(13, 16)
-            const altLoc = it.extract(17, 17)
-            const resName = it.extract(18, 20)
-            const chainID = it.extract(22, 22)
-            const resSeq = it.extract(23, 26)
-            const iCode = it.extract(27, 27)
-            const x = it.extract(31, 38)
-            const y = it.extract(39, 46)
-            const z = it.extract(47, 54)
-            const occupancy = it.extract(55, 60)
-            const tempFactor = it.extract(61, 66)
-            const element = it.extract(77, 78)
-            const charge = it.extract(79, 80)
+        return this.lines.map(line => {
+            const serial = line.extract(7, 11)
+            const name = line.extract(13, 16)
+            const altLoc = line.extract(17, 17)
+            const resName = line.extract(18, 20)
+            const chainID = line.extract(22, 22)
+            const resSeq = line.extract(23, 26)
+            const iCode = line.extract(27, 27)
+            const x = line.extract(31, 38)
+            const y = line.extract(39, 46)
+            const z = line.extract(47, 54)
+            const occupancy = line.extract(55, 60)
+            const tempFactor = line.extract(61, 66)
+            const element = line.extract(77, 78)
+            const charge = line.extract(79, 80)
+
             return {
                 serial: this.toIntOrNull(serial),
                 name,

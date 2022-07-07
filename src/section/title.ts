@@ -58,7 +58,6 @@ export class HeaderParser extends AbstractParser<Header> {
 
         if (this.lines.length == 0)
             return empty
-
         const line = this.lines[0]
 
         const classification = line.extract(11, 50)
@@ -121,21 +120,26 @@ export class ObslteParser extends AbstractParser<Obslte[]> {
     }
 
     parse(): Obslte[] {
-        return this.lines.map(it => {
-            const repDate = it.extract(12, 20)
-            const idCode = it.extract(22, 25)
+        return this.lines.map(line => {
+            const repDate = line.extract(12, 20)
+            const idCode = line.extract(22, 25)
             const rIdCodes = [
-                it.extract(32, 35),
-                it.extract(37, 40),
-                it.extract(42, 45),
-                it.extract(47, 50),
-                it.extract(52, 55),
-                it.extract(57, 60),
-                it.extract(62, 65),
-                it.extract(67, 70),
-                it.extract(72, 75),
-            ].filter(it => it) as string[]
-            return {repDate, idCode, rIdCodes}
+                line.extract(32, 35),
+                line.extract(37, 40),
+                line.extract(42, 45),
+                line.extract(47, 50),
+                line.extract(52, 55),
+                line.extract(57, 60),
+                line.extract(62, 65),
+                line.extract(67, 70),
+                line.extract(72, 75),
+            ]
+
+            return {
+                repDate,
+                idCode,
+                rIdCodes: rIdCodes.filter(it => it) as string[]
+            }
         })
     }
 }
@@ -231,22 +235,22 @@ export class SplitParser extends AbstractParser<string[]> {
     }
 
     parse(): string[] {
-        return this.lines.flatMap(it => {
+        return this.lines.flatMap(line => {
             return [
-                it.extract(12, 15),
-                it.extract(17, 20),
-                it.extract(22, 25),
-                it.extract(27, 30),
-                it.extract(32, 35),
-                it.extract(37, 40),
-                it.extract(42, 45),
-                it.extract(47, 50),
-                it.extract(52, 55),
-                it.extract(57, 60),
-                it.extract(62, 65),
-                it.extract(67, 70),
-                it.extract(72, 75),
-                it.extract(77, 80),
+                line.extract(12, 15),
+                line.extract(17, 20),
+                line.extract(22, 25),
+                line.extract(27, 30),
+                line.extract(32, 35),
+                line.extract(37, 40),
+                line.extract(42, 45),
+                line.extract(47, 50),
+                line.extract(52, 55),
+                line.extract(57, 60),
+                line.extract(62, 65),
+                line.extract(67, 70),
+                line.extract(72, 75),
+                line.extract(77, 80),
             ].filter(it => it) as string[]
         })
     }
@@ -312,6 +316,7 @@ export class Remark465Parser extends RemarkParser<MissingResidue[]> {
                 const chainID = line.extract(20, 20)
                 const seqNum = line.extract(22, 26)
                 const iCode = line.extract(27, 27)
+
                 missingResidues.push({
                     resName,
                     chainID,
@@ -380,6 +385,7 @@ export class Remark470Parser extends RemarkParser<MissingAtom[]> {
                     const seqNum = line.extract(22, 25)
                     const iCode = line.extract(26, 26)
                     const atoms = line.extract(29)
+
                     missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
                     break
                 }
@@ -389,6 +395,7 @@ export class Remark470Parser extends RemarkParser<MissingAtom[]> {
                     const seqNum = line.extract(21, 24)
                     const iCode = line.extract(25, 25)
                     const atoms = line.extract(28)
+
                     missingAtoms.push(toMissingAtom(resName, chainID, seqNum, iCode, atoms))
                     break
                 }
@@ -404,5 +411,3 @@ export class Remark470Parser extends RemarkParser<MissingAtom[]> {
         return missingAtoms
     }
 }
-
-

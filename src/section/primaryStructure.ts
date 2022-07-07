@@ -99,20 +99,20 @@ export class DbrefParser extends AbstractParser<Dbref[]> {
     }
 
     parse(): Dbref[] {
-        return this.lines.map(it => {
-            const idCode = it.extract(8, 11)
-            const chainID = it.extract(13, 13)
-            const seqBegin = it.extract(15, 18)
-            const insertBegin = it.extract(19, 19)
-            const seqEnd = it.extract(21, 24)
-            const insertEnd = it.extract(25, 25)
-            const database = it.extract(27, 32)
-            const dbAccession = it.extract(34, 41)
-            const dbIdCode = it.extract(43, 54)
-            const dbseqBegin = it.extract(56, 60)
-            const idbnsBeg = it.extract(61, 61)
-            const dbseqEnd = it.extract(63, 67)
-            const dbinsEnd = it.extract(68, 68)
+        return this.lines.map(line => {
+            const idCode = line.extract(8, 11)
+            const chainID = line.extract(13, 13)
+            const seqBegin = line.extract(15, 18)
+            const insertBegin = line.extract(19, 19)
+            const seqEnd = line.extract(21, 24)
+            const insertEnd = line.extract(25, 25)
+            const database = line.extract(27, 32)
+            const dbAccession = line.extract(34, 41)
+            const dbIdCode = line.extract(43, 54)
+            const dbseqBegin = line.extract(56, 60)
+            const idbnsBeg = line.extract(61, 61)
+            const dbseqEnd = line.extract(63, 67)
+            const dbinsEnd = line.extract(68, 68)
 
             return {
                 idCode,
@@ -155,17 +155,18 @@ export class SeqadvParser extends AbstractParser<Seqadv[]> {
     }
 
     parse(): Seqadv[] {
-        return this.lines.map(it => {
-            const idCode = it.extract(8, 11)
-            const resName = it.extract(13, 15)
-            const chainID = it.extract(17, 17)
-            const seqNum = it.extract(19, 22)
-            const iCode = it.extract(23, 23)
-            const database = it.extract(25, 28)
-            const dbAccession = it.extract(30, 38)
-            const dbRes = it.extract(40, 42)
-            const dbSeq = it.extract(44, 48)
-            const conflict = it.extract(50, 70)
+        return this.lines.map(line => {
+            const idCode = line.extract(8, 11)
+            const resName = line.extract(13, 15)
+            const chainID = line.extract(17, 17)
+            const seqNum = line.extract(19, 22)
+            const iCode = line.extract(23, 23)
+            const database = line.extract(25, 28)
+            const dbAccession = line.extract(30, 38)
+            const dbRes = line.extract(40, 42)
+            const dbSeq = line.extract(44, 48)
+            const conflict = line.extract(50, 70)
+
             return {
                 idCode,
                 resName,
@@ -201,14 +202,15 @@ export class ModresParser extends AbstractParser<Modres[]> {
     }
 
     parse(): Modres[] {
-        return this.lines.map(it => {
-            const idCode = it.extract(8, 11)
-            const resName = it.extract(13, 15)
-            const chainID = it.extract(17, 17)
-            const seqNum = it.extract(19, 22)
-            const iCode = it.extract(23, 23)
-            const stdRes = it.extract(25, 27)
-            const comment = it.extract(30, 70)
+        return this.lines.map(line => {
+            const idCode = line.extract(8, 11)
+            const resName = line.extract(13, 15)
+            const chainID = line.extract(17, 17)
+            const seqNum = line.extract(19, 22)
+            const iCode = line.extract(23, 23)
+            const stdRes = line.extract(25, 27)
+            const comment = line.extract(30, 70)
+
             return {
                 idCode,
                 resName,
@@ -247,15 +249,15 @@ export class Dbref1Parser extends AbstractParser<Dbref1[]> {
     }
 
     parse(): Dbref1[] {
-        return this.lines.map(it => {
-            const idCode = it.extract(8, 11)
-            const chainID = it.extract(13, 13)
-            const seqBegin = it.extract(15, 18)
-            const insertBegin = it.extract(19, 19)
-            const seqEnd = it.extract(21, 24)
-            const insertEnd = it.extract(25, 25)
-            const database = it.extract(27, 32)
-            const dbIdCode = it.extract(48, 67)
+        return this.lines.map(line => {
+            const idCode = line.extract(8, 11)
+            const chainID = line.extract(13, 13)
+            const seqBegin = line.extract(15, 18)
+            const insertBegin = line.extract(19, 19)
+            const seqEnd = line.extract(21, 24)
+            const insertEnd = line.extract(25, 25)
+            const database = line.extract(27, 32)
+            const dbIdCode = line.extract(48, 67)
 
             return {
                 idCode,
@@ -291,12 +293,12 @@ export class Dbref2Parser extends AbstractParser<Dbref2[]> {
     }
 
     parse(): Dbref2[] {
-        return this.lines.map(it => {
-            const idCode = it.extract(8, 11)
-            const chainID = it.extract(13, 13)
-            const dbAccession = it.extract(19, 40)
-            const seqBegin = it.extract(46, 55)
-            const seqEnd = it.extract(58, 67)
+        return this.lines.map(line => {
+            const idCode = line.extract(8, 11)
+            const chainID = line.extract(13, 13)
+            const dbAccession = line.extract(19, 40)
+            const seqBegin = line.extract(46, 55)
+            const seqEnd = line.extract(58, 67)
 
             return {
                 idCode,
@@ -342,30 +344,31 @@ export class SeqresParser extends AbstractParser<Seqres[]> {
     }
 
     parse(): Seqres[] {
-        return this.lines.map(it => {
-            const serNum = it.extract(8, 10)
-            const chainID = it.extract(12, 12)
-            const numRes = it.extract(14, 17)
+        return this.lines.map(line => {
+            const serNum = line.extract(8, 10)
+            const chainID = line.extract(12, 12)
+            const numRes = line.extract(14, 17)
             const resNames = [
-                it.extract(20, 22),
-                it.extract(24, 26),
-                it.extract(28, 30),
-                it.extract(32, 34),
-                it.extract(36, 38),
-                it.extract(40, 42),
-                it.extract(44, 46),
-                it.extract(48, 50),
-                it.extract(52, 54),
-                it.extract(56, 58),
-                it.extract(60, 62),
-                it.extract(64, 66),
-                it.extract(68, 70),
-            ].filter(it => it) as string[]
+                line.extract(20, 22),
+                line.extract(24, 26),
+                line.extract(28, 30),
+                line.extract(32, 34),
+                line.extract(36, 38),
+                line.extract(40, 42),
+                line.extract(44, 46),
+                line.extract(48, 50),
+                line.extract(52, 54),
+                line.extract(56, 58),
+                line.extract(60, 62),
+                line.extract(64, 66),
+                line.extract(68, 70),
+            ]
+
             return {
                 serNum: this.toIntOrNull(serNum),
                 chainID,
                 numRes: this.toIntOrNull(numRes),
-                resNames,
+                resNames: resNames.filter(it => it) as string[],
             }
         })
     }

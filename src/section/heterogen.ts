@@ -44,13 +44,14 @@ export class HetParser extends AbstractParser<Het[]> {
     }
 
     parse(): Het[] {
-        return this.lines.map(it => {
-            const hetID = it.extract(8, 10)
-            const ChainID = it.extract(13, 13)
-            const seqNum = it.extract(14, 17)
-            const iCode = it.extract(18, 18)
-            const numHetAtoms = it.extract(21, 25)
-            const text = it.extract(31, 70)
+        return this.lines.map(line => {
+            const hetID = line.extract(8, 10)
+            const ChainID = line.extract(13, 13)
+            const seqNum = line.extract(14, 17)
+            const iCode = line.extract(18, 18)
+            const numHetAtoms = line.extract(21, 25)
+            const text = line.extract(31, 70)
+
             return {
                 hetID,
                 ChainID,
@@ -78,9 +79,9 @@ export class HetnamParser extends AbstractParser<Hetnam[]> {
     }
 
     parse(): Hetnam[] {
-        const groupBy = this.lines.map(it => {
-            const hetID = it.extract(12, 14)!
-            const text = it.extract(16, 70)
+        const groupBy = this.lines.map(line => {
+            const hetID = line.extract(12, 14)!
+            const text = line.extract(16, 70)
             return [
                 hetID,
                 text
@@ -119,9 +120,9 @@ export class HetsynParser extends AbstractParser<Hetsyn[]> {
     }
 
     parse(): Hetsyn[] {
-        const groupBy = this.lines.map(it => {
-            const hetID = it.extract(12, 14)!
-            const hetSynonyms = it.extract(16, 70)
+        const groupBy = this.lines.map(line => {
+            const hetID = line.extract(12, 14)!
+            const hetSynonyms = line.extract(16, 70)
             return [
                 hetID,
                 hetSynonyms

@@ -44,7 +44,6 @@ export class MasterParser extends AbstractParser<Master | null> {
     parse(): Master | null {
         if (this.lines.length == 0)
             return null
-
         const line = this.lines[0]
 
         const numRemark = line.extract(11, 15)

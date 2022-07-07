@@ -59,19 +59,19 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
     }
 
     parse(): Ssbond[] {
-        return this.lines.map(it => {
-            const serNum = it.extract(8, 10)
-            const resName1 = it.extract(12, 14)
-            const chainID1 = it.extract(16, 16)
-            const seqNum1 = it.extract(18, 21)
-            const icode1 = it.extract(22, 22)
-            const resName2 = it.extract(26, 28)
-            const chainID2 = it.extract(30, 30)
-            const seqNum2 = it.extract(32, 35)
-            const icode2 = it.extract(36, 36)
-            const sym1 = it.extract(60, 65)
-            const sym2 = it.extract(67, 72)
-            const Length = it.extract(74, 78)
+        return this.lines.map(line => {
+            const serNum = line.extract(8, 10)
+            const resName1 = line.extract(12, 14)
+            const chainID1 = line.extract(16, 16)
+            const seqNum1 = line.extract(18, 21)
+            const icode1 = line.extract(22, 22)
+            const resName2 = line.extract(26, 28)
+            const chainID2 = line.extract(30, 30)
+            const seqNum2 = line.extract(32, 35)
+            const icode2 = line.extract(36, 36)
+            const sym1 = line.extract(60, 65)
+            const sym2 = line.extract(67, 72)
+            const Length = line.extract(74, 78)
 
             return {
                 serNum: this.toIntOrNull(serNum),
@@ -114,18 +114,19 @@ export class CispepParser extends AbstractParser<Cispep[]> {
     }
 
     parse(): Cispep[] {
-        return this.lines.map(it => {
-            const serNum = it.extract(8, 10)
-            const pep1 = it.extract(12, 14)
-            const chainID1 = it.extract(16, 16)
-            const seqNum1 = it.extract(18, 21)
-            const icode1 = it.extract(22, 22)
-            const pep2 = it.extract(26, 28)
-            const chainID2 = it.extract(30, 30)
-            const seqNum2 = it.extract(32, 35)
-            const icode2 = it.extract(36, 36)
-            const modNum = it.extract(44, 46)
-            const measure = it.extract(54, 59)
+        return this.lines.map(line => {
+            const serNum = line.extract(8, 10)
+            const pep1 = line.extract(12, 14)
+            const chainID1 = line.extract(16, 16)
+            const seqNum1 = line.extract(18, 21)
+            const icode1 = line.extract(22, 22)
+            const pep2 = line.extract(26, 28)
+            const chainID2 = line.extract(30, 30)
+            const seqNum2 = line.extract(32, 35)
+            const icode2 = line.extract(36, 36)
+            const modNum = line.extract(44, 46)
+            const measure = line.extract(54, 59)
+
             return {
                 serNum: this.toIntOrNull(serNum),
                 pep1,
