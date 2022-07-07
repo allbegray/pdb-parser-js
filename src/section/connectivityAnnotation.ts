@@ -1,3 +1,4 @@
+// 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
 
@@ -16,9 +17,22 @@ export interface Ssbond {
     Length: number | null
 }
 
-// TODO
 export interface Link {
-
+    name1: string | null
+    altLoc1: string | null
+    resName1: string | null
+    chainID1: string | null
+    resSeq1: number | null
+    iCode1: string | null
+    name2: string | null
+    altLoc2: string | null
+    resName2: string | null
+    chainID2: string | null
+    resSeq2: number | null
+    iCode2: string | null
+    sym1: string | null
+    sym2: string | null
+    Length: number | null
 }
 
 export interface Cispep {
@@ -83,6 +97,71 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
                 chainID2,
                 seqNum2: this.toIntOrNull(seqNum2),
                 icode2,
+                sym1,
+                sym2,
+                Length: this.toFloatOrNull(Length),
+            }
+        })
+    }
+}
+
+/***
+ * COLUMNS         DATA TYPE      FIELD           DEFINITION
+ * ------------------------------------------------------------------------------------
+ *  1 -  6         Record name    "LINK  "
+ * 13 - 16         Atom           name1           Atom name.
+ * 17              Character      altLoc1         Alternate location indicator.
+ * 18 - 20         Residue name   resName1        Residue  name.
+ * 22              Character      chainID1        Chain identifier.
+ * 23 - 26         Integer        resSeq1         Residue sequence number.
+ * 27              AChar          iCode1          Insertion code.
+ * 43 - 46         Atom           name2           Atom name.
+ * 47              Character      altLoc2         Alternate location indicator.
+ * 48 - 50         Residue name   resName2        Residue name.
+ * 52              Character      chainID2        Chain identifier.
+ * 53 - 56         Integer        resSeq2         Residue sequence number.
+ * 57              AChar          iCode2          Insertion code.
+ * 60 - 65         SymOP          sym1            Symmetry operator atom 1.
+ * 67 - 72         SymOP          sym2            Symmetry operator atom 2.
+ * 74 – 78         Real(5.2)      Length          Link distance
+ */
+export class LinkParser extends AbstractParser<Link[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('LINK  ')
+    }
+
+    protected _parse(): Link[] {
+        return this.lines.map(line => {
+            const name1 = line.extract(13, 16)
+            const altLoc1 = line.extract(17, 17)
+            const resName1 = line.extract(18, 20)
+            const chainID1 = line.extract(22, 22)
+            const resSeq1 = line.extract(23, 26)
+            const iCode1 = line.extract(27, 27)
+            const name2 = line.extract(43, 46)
+            const altLoc2 = line.extract(47, 47)
+            const resName2 = line.extract(48, 50)
+            const chainID2 = line.extract(52, 52)
+            const resSeq2 = line.extract(53, 56)
+            const iCode2 = line.extract(57, 57)
+            const sym1 = line.extract(60, 65)
+            const sym2 = line.extract(67, 72)
+            const Length = line.extract(74, 78)
+
+            return {
+                name1,
+                altLoc1,
+                resName1,
+                chainID1,
+                resSeq1: this.toIntOrNull(resSeq1),
+                iCode1,
+                name2,
+                altLoc2,
+                resName2,
+                chainID2,
+                resSeq2: this.toIntOrNull(resSeq2),
+                iCode2,
                 sym1,
                 sym2,
                 Length: this.toFloatOrNull(Length),

@@ -1,3 +1,4 @@
+// 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
 
@@ -20,9 +21,12 @@ export interface Hetsyn {
     hetSynonyms: string | null
 }
 
-// TODO
 export interface Formul {
-
+    compNum: number | null
+    hetID: string | null
+    continuation: number | null
+    asterisk: string | null
+    text: string | null
 }
 
 /***
@@ -143,5 +147,41 @@ export class HetsynParser extends AbstractParser<Hetsyn[]> {
         }
 
         return items
+    }
+}
+
+
+/***
+ * COLUMNS        DATA TYPE     FIELD         DEFINITION
+ * -----------------------------------------------------------------------
+ *  1 -  6        Record name   "FORMUL"
+ *  9 - 10        Integer       compNum       Component  number.
+ * 13 - 15        LString(3)    hetID         Het identifier.
+ * 17 - 18        Integer       continuation  Continuation number.
+ * 19             Character     asterisk      "*" for water.
+ * 20 - 70        String        text          Chemical formula.
+ */
+export class FormulParser extends AbstractParser<Formul[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('FORMUL')
+    }
+
+    protected _parse(): Formul[] {
+        return this.lines.map(line => {
+            const compNum = line.extract(9, 10)
+            const hetID = line.extract(13, 15)
+            const continuation = line.extract(17, 18)
+            const asterisk = line.extract(19, 19)
+            const text = line.extract(20, 70)
+
+            return {
+                compNum: this.toIntOrNull(compNum),
+                hetID,
+                continuation: this.toIntOrNull(continuation),
+                asterisk,
+                text
+            }
+        })
     }
 }
