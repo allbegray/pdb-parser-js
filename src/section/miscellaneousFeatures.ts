@@ -118,14 +118,14 @@ export class SiteParser extends AbstractParser<Site[]> {
 
     protected validate(t: Site[]): boolean {
         const groupBy = t.reduce((acc, site) => {
-            const key = site.siteID + "_" + site.numRes
+            const key = site.siteID + "\t" + site.numRes
             acc[key] = acc[key] ?? []
             acc[key].push(...site.residues)
             return acc
         }, {} as { [key: string]: Residue[] })
 
         for (const key in groupBy) {
-            const [siteID, numRes] = key.split('_') as [string, string]
+            const [siteID, numRes] = key.split('\t') as [string, string]
             const length = groupBy[key].length
             if (parseInt(numRes) != length) {
                 console.error(`"${siteID}" length error. expected : ${numRes}, actual : ${length}`)
