@@ -16,6 +16,9 @@ export interface Master {
     numSeq: number | null
 }
 
+export interface End {
+}
+
 /***
  * COLUMNS         DATA TYPE     FIELD          DEFINITION
  * ----------------------------------------------------------------------------------
