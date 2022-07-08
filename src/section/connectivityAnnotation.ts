@@ -43,14 +43,16 @@ export interface Link {
 
 export interface Cispep {
     serNum: number | null
-    pep1: string | null
-    chainID1: string | null
-    seqNum1: number | null
-    icode1: string | null
-    pep2: string | null
-    chainID2: string | null
-    seqNum2: number | null
-    icode2: string | null
+    residue1: Residue
+    // pep1: string | null
+    // chainID1: string | null
+    // seqNum1: number | null
+    // icode1: string | null
+    residue2: Residue
+    // pep2: string | null
+    // chainID2: string | null
+    // seqNum2: number | null
+    // icode2: string | null
     modNum: number | null
     measure: number | null
 }
@@ -222,14 +224,18 @@ export class CispepParser extends AbstractParser<Cispep[]> {
 
             return {
                 serNum: toIntOrNull(serNum),
-                pep1,
-                chainID1,
-                seqNum1: toIntOrNull(seqNum1),
-                icode1,
-                pep2,
-                chainID2,
-                seqNum2: toIntOrNull(seqNum2),
-                icode2,
+                residue1: {
+                    resName: pep1,
+                    chainID: chainID1,
+                    resSeq: toIntOrNull(seqNum1),
+                    iCode: icode1,
+                },
+                residue2: {
+                    resName: pep2,
+                    chainID: chainID2,
+                    resSeq: toIntOrNull(seqNum2),
+                    iCode: icode2,
+                },
                 modNum: toIntOrNull(modNum),
                 measure: toFloatOrNull(measure),
             }
