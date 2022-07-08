@@ -2,7 +2,7 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
-import {Residue} from "../model";
+import {Residue, ResidueWithAtom} from "../model";
 
 export interface Ssbond {
     serNum: number | null
@@ -22,16 +22,16 @@ export interface Ssbond {
 }
 
 export interface Link {
-    name1: string | null
-    altLoc1: string | null
-    residue1: Residue
+    residue1: ResidueWithAtom
+    // name1: string | null
+    // altLoc1: string | null
     // resName1: string | null
     // chainID1: string | null
     // resSeq1: number | null
     // iCode1: string | null
-    name2: string | null
-    altLoc2: string | null
-    residue2: Residue
+    residue2: ResidueWithAtom
+    // name2: string | null
+    // altLoc2: string | null
     // resName2: string | null
     // chainID2: string | null
     // resSeq2: number | null
@@ -162,17 +162,17 @@ export class LinkParser extends AbstractParser<Link[]> {
             const Length = line.extract(74, 78)
 
             return {
-                name1,
-                altLoc1,
                 residue1: {
+                    atom: name1,
+                    altLoc: altLoc1,
                     resName: resName1,
                     chainID: chainID1,
                     resSeq: toIntOrNull(resSeq1),
                     iCode: iCode1,
                 },
-                name2,
-                altLoc2,
                 residue2: {
+                    atom: name2,
+                    altLoc: altLoc2,
                     resName: resName2,
                     chainID: chainID2,
                     resSeq: toIntOrNull(resSeq2),

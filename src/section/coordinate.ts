@@ -1,7 +1,7 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
-import {Residue} from "../model";
+import {Residue, ResidueWithAtom} from "../model";
 
 export interface Model {
 }
@@ -9,10 +9,10 @@ export interface Model {
 /***
  * https://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ANISOU
  */
-export interface Anisou extends Residue {
+export interface Anisou extends ResidueWithAtom {
     serial: number | null
-    name: string | null
-    altLoc: string | null
+    // name: string | null
+    // altLoc: string | null
     // resName: string | null
     // chainID: string | null
     // resSeq: number | null
@@ -27,10 +27,10 @@ export interface Anisou extends Residue {
     charge: string | null
 }
 
-interface CoordinateData extends Residue {
+interface CoordinateData extends ResidueWithAtom {
     serial: number | null
-    name: string | null
-    altLoc: string | null
+    // name: string | null
+    // altLoc: string | null
     // resName: string | null
     // chainID: string | null
     // resSeq: number | null
@@ -78,7 +78,7 @@ abstract class Coordinate {
 
         return {
             serial: toIntOrNull(serial),
-            name,
+            atom: name,
             altLoc,
             resName,
             chainID,
@@ -192,7 +192,7 @@ export class AnisouParser extends AbstractParser<Anisou[]> {
 
             return {
                 serial: toIntOrNull(serial),
-                name,
+                atom: name,
                 altLoc,
                 resName,
                 chainID,

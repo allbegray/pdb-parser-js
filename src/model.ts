@@ -5,6 +5,7 @@ export interface Residue {
     iCode: string | null
 }
 
-export interface ResidueWithAtom {
+export interface ResidueWithAtom extends Residue {
     atom: string | null
+    altLoc?: string | null
 }
