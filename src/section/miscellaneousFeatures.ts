@@ -3,6 +3,7 @@ import '../extension/string';
 import {AbstractParser} from "../parser";
 import {Residue} from "../model";
 import {toIntOrNull} from "../extension/string";
+import {Pair} from "../tuple";
 
 export interface Site {
     seqNum: number
@@ -121,7 +122,7 @@ export class SiteParser extends AbstractParser<Site[]> {
         }, {} as { [key: string]: Residue[] })
 
         for (const key in groupBy) {
-            const [siteID, numRes] = key.split('\t') as [string, string]
+            const [siteID, numRes] = key.split('\t') as Pair<string, string>
             const length = groupBy[key].length
             if (parseInt(numRes) != length) {
                 console.error(`"${siteID}" length error. expected : ${numRes}, actual : ${length}`)
