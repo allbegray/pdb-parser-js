@@ -5,7 +5,7 @@ import {toIntOrNull} from "../extension/string";
 
 export interface Het {
     hetID: string | null
-    ChainID: string | null
+    chainID: string | null
     seqNum: number | null
     iCode: string | null
     numHetAtoms: number | null
@@ -59,7 +59,7 @@ export class HetParser extends AbstractParser<Het[]> {
 
             return {
                 hetID,
-                ChainID,
+                chainID: ChainID,
                 seqNum: toIntOrNull(seqNum),
                 iCode,
                 numHetAtoms: toIntOrNull(numHetAtoms),
