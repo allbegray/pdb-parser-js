@@ -4,16 +4,16 @@ import {AbstractParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
 import {Residue} from "../model";
 
-export interface Dbref {
-    idCode: string | null
-    chainID: string | null
-    seqBegin: number | null
-    insertBegin: string | null
-    seqEnd: number | null
-    insertEnd: string | null
-    database: string | null
-    dbAccession: string | null
-    dbIdCode: string | null
+export interface Dbref extends Dbref1, Dbref2 {
+    // idCode: string | null
+    // chainID: string | null
+    // seqBegin: number | null
+    // insertBegin: string | null
+    // seqEnd: number | null
+    // insertEnd: string | null
+    // database: string | null
+    // dbAccession: string | null
+    // dbIdCode: string | null
     dbseqBegin: number | null
     idbnsBeg: string | null
     dbseqEnd: number | null
