@@ -1,19 +1,13 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {Residue} from "../model";
 
 export interface Site {
     seqNum: number
     siteID: string
     numRes: number
     residues: Residue[]
-}
-
-export interface Residue {
-    resName: string | null
-    chainID: string | null
-    seq: number | null
-    iCode: string | null
 }
 
 /***
@@ -73,7 +67,7 @@ export class SiteParser extends AbstractParser<Site[]> {
             return {
                 resName,
                 chainID,
-                seq: this.toIntOrNull(seq),
+                seqNum: this.toIntOrNull(seq),
                 iCode,
             }
         }
