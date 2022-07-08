@@ -105,14 +105,17 @@ export class HelixParser extends AbstractParser<Helix[]> {
             return {
                 serNum: this.toIntOrNull(serNum),
                 helixID,
+
                 initResName,
                 initChainID,
                 initSeqNum: this.toIntOrNull(initSeqNum),
                 initICode,
+
                 endResName,
                 endChainID,
                 endSeqNum: this.toIntOrNull(endSeqNum),
                 endICode,
+
                 helixClass: this.toIntOrNull(helixClass),
                 comment,
                 length: this.toIntOrNull(length),
