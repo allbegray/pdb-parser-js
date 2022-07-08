@@ -2,6 +2,7 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
+import {Residue, ResidueWithAtom} from "../model";
 
 /***
  * https://www.wwpdb.org/documentation/file-format-content/format33/sect5.html#HELIX
@@ -10,15 +11,17 @@ export interface Helix {
     serNum: number | null
     helixID: string | null
 
-    initResName: string | null
-    initChainID: string | null
-    initSeqNum: number | null
-    initICode: string | null
+    initResidue: Residue
+    // initResName: string | null
+    // initChainID: string | null
+    // initSeqNum: number | null
+    // initICode: string | null
 
-    endResName: string | null
-    endChainID: string | null
-    endSeqNum: number | null
-    endICode: string | null
+    endResidue: Residue
+    // endResName: string | null
+    // endChainID: string | null
+    // endSeqNum: number | null
+    // endICode: string | null
 
     helixClass: number | null
     comment: string | null
@@ -33,29 +36,33 @@ export interface Sheet {
     sheetID: string | null
     numStrands: number | null
 
-    initResName: string | null
-    initChainID: string | null
-    initSeqNum: number | null
-    initICode: string | null
+    initResidue: Residue
+    // initResName: string | null
+    // initChainID: string | null
+    // initSeqNum: number | null
+    // initICode: string | null
 
-    endResName: string | null
-    endChainID: string | null
-    endSeqNum: number | null
-    endICode: string | null
+    endResidue: Residue
+    // endResName: string | null
+    // endChainID: string | null
+    // endSeqNum: number | null
+    // endICode: string | null
 
     sense: number | null
 
-    curAtom: string | null
-    curResName: string | null
-    curChainId: string | null
-    curResSeq: number | null
-    curICode: string | null
+    curResidue: ResidueWithAtom
+    // curAtom: string | null
+    // curResName: string | null
+    // curChainId: string | null
+    // curResSeq: number | null
+    // curICode: string | null
 
-    prevAtom: string | null
-    prevResName: string | null
-    prevChainId: string | null
-    prevResSeq: number | null
-    prevICode: string | null
+    prevResidue: ResidueWithAtom
+    // prevAtom: string | null
+    // prevResName: string | null
+    // prevChainId: string | null
+    // prevResSeq: number | null
+    // prevICode: string | null
 }
 
 /***
@@ -106,17 +113,18 @@ export class HelixParser extends AbstractParser<Helix[]> {
             return {
                 serNum: toIntOrNull(serNum),
                 helixID,
-
-                initResName,
-                initChainID,
-                initSeqNum: toIntOrNull(initSeqNum),
-                initICode,
-
-                endResName,
-                endChainID,
-                endSeqNum: toIntOrNull(endSeqNum),
-                endICode,
-
+                initResidue: {
+                    resName: initResName,
+                    chainID: initChainID,
+                    resSeq: toIntOrNull(initSeqNum),
+                    iCode: initICode,
+                },
+                endResidue: {
+                    resName: endResName,
+                    chainID: endChainID,
+                    resSeq: toIntOrNull(endSeqNum),
+                    iCode: endICode,
+                },
                 helixClass: toIntOrNull(helixClass),
                 comment,
                 length: toIntOrNull(length),
@@ -205,30 +213,33 @@ export class SheetParser extends AbstractParser<Sheet[]> {
                 strand: toIntOrNull(strand),
                 sheetID,
                 numStrands: toIntOrNull(numStrands),
-
-                initResName,
-                initChainID,
-                initSeqNum: toIntOrNull(initSeqNum),
-                initICode,
-
-                endResName,
-                endChainID,
-                endSeqNum: toIntOrNull(endSeqNum),
-                endICode,
-
+                initResidue: {
+                    resName: initResName,
+                    chainID: initChainID,
+                    resSeq: toIntOrNull(initSeqNum),
+                    iCode: initICode,
+                },
+                endResidue: {
+                    resName: endResName,
+                    chainID: endChainID,
+                    resSeq: toIntOrNull(endSeqNum),
+                    iCode: endICode,
+                },
                 sense: toIntOrNull(sense),
-
-                curAtom,
-                curResName,
-                curChainId,
-                curResSeq: toIntOrNull(curResSeq),
-                curICode,
-
-                prevAtom,
-                prevResName,
-                prevChainId,
-                prevResSeq: toIntOrNull(prevResSeq),
-                prevICode,
+                curResidue: {
+                    atom: curAtom,
+                    resName: curResName,
+                    chainID: curChainId,
+                    resSeq: toIntOrNull(curResSeq),
+                    iCode: curICode,
+                },
+                prevResidue: {
+                    atom: prevAtom,
+                    resName: prevResName,
+                    chainID: prevChainId,
+                    resSeq: toIntOrNull(prevResSeq),
+                    iCode: prevICode,
+                },
             }
         })
     }

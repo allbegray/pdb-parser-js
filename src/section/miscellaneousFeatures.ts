@@ -68,7 +68,7 @@ export class SiteParser extends AbstractParser<Site[]> {
             return {
                 resName,
                 chainID,
-                seqNum: toIntOrNull(seq),
+                resSeq: toIntOrNull(seq),
                 iCode,
             }
         }

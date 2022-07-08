@@ -1,6 +1,7 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
+import {Residue} from "../model";
 
 export interface Header {
     classification: string | null
@@ -17,21 +18,21 @@ export interface Obslte {
 /***
  * remark 465
  */
-export interface MissingResidue {
-    resName: string | null
-    chainID: string | null
-    seqNum: number | null
-    iCode: string | null
+export interface MissingResidue extends Residue {
+    // resName: string | null
+    // chainID: string | null
+    // seqNum: number | null
+    // iCode: string | null
 }
 
 /***
  * remark 470
  */
-export interface MissingAtom {
-    resName: string | null
-    chainID: string | null
-    seqNum: number | null
-    iCode: string | null
+export interface MissingAtom extends MissingResidue {
+    // resName: string | null
+    // chainID: string | null
+    // seqNum: number | null
+    // iCode: string | null
     atoms: string[]
 }
 
@@ -321,7 +322,7 @@ export class Remark465Parser extends RemarkParser<MissingResidue[]> {
                 missingResidues.push({
                     resName,
                     chainID,
-                    seqNum: toIntOrNull(seqNum),
+                    resSeq: toIntOrNull(seqNum),
                     iCode,
                 })
             } else {
@@ -370,7 +371,7 @@ export class Remark470Parser extends RemarkParser<MissingAtom[]> {
             return {
                 resName,
                 chainID,
-                seqNum: toIntOrNull(seqNum),
+                resSeq: toIntOrNull(seqNum),
                 iCode,
                 atoms: atoms?.split(' ')?.map(it => it.trim())?.filter(it => it) ?? []
             }

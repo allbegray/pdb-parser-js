@@ -2,17 +2,20 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
+import {Residue} from "../model";
 
 export interface Ssbond {
     serNum: number | null
-    resName1: string | null
-    chainID1: string | null
-    seqNum1: number | null
-    icode1: string | null
-    resName2: string | null
-    chainID2: string | null
-    seqNum2: number | null
-    icode2: string | null
+    residue1: Residue
+    // resName1: string | null
+    // chainID1: string | null
+    // seqNum1: number | null
+    // icode1: string | null
+    residue2: Residue
+    // resName2: string | null
+    // chainID2: string | null
+    // seqNum2: number | null
+    // icode2: string | null
     sym1: string | null
     sym2: string | null
     Length: number | null
@@ -21,16 +24,18 @@ export interface Ssbond {
 export interface Link {
     name1: string | null
     altLoc1: string | null
-    resName1: string | null
-    chainID1: string | null
-    resSeq1: number | null
-    iCode1: string | null
+    residue1: Residue
+    // resName1: string | null
+    // chainID1: string | null
+    // resSeq1: number | null
+    // iCode1: string | null
     name2: string | null
     altLoc2: string | null
-    resName2: string | null
-    chainID2: string | null
-    resSeq2: number | null
-    iCode2: string | null
+    residue2: Residue
+    // resName2: string | null
+    // chainID2: string | null
+    // resSeq2: number | null
+    // iCode2: string | null
     sym1: string | null
     sym2: string | null
     Length: number | null
@@ -90,14 +95,18 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
 
             return {
                 serNum: toIntOrNull(serNum),
-                resName1,
-                chainID1,
-                seqNum1: toIntOrNull(seqNum1),
-                icode1,
-                resName2,
-                chainID2,
-                seqNum2: toIntOrNull(seqNum2),
-                icode2,
+                residue1: {
+                    resName: resName1,
+                    chainID: chainID1,
+                    resSeq: toIntOrNull(seqNum1),
+                    iCode: icode1,
+                },
+                residue2: {
+                    resName: resName2,
+                    chainID: chainID2,
+                    resSeq: toIntOrNull(seqNum2),
+                    iCode: icode2,
+                },
                 sym1,
                 sym2,
                 Length: toFloatOrNull(Length),
@@ -153,16 +162,20 @@ export class LinkParser extends AbstractParser<Link[]> {
             return {
                 name1,
                 altLoc1,
-                resName1,
-                chainID1,
-                resSeq1: toIntOrNull(resSeq1),
-                iCode1,
+                residue1: {
+                    resName: resName1,
+                    chainID: chainID1,
+                    resSeq: toIntOrNull(resSeq1),
+                    iCode: iCode1,
+                },
                 name2,
                 altLoc2,
-                resName2,
-                chainID2,
-                resSeq2: toIntOrNull(resSeq2),
-                iCode2,
+                residue2: {
+                    resName: resName2,
+                    chainID: chainID2,
+                    resSeq: toIntOrNull(resSeq2),
+                    iCode: iCode2,
+                },
                 sym1,
                 sym2,
                 Length: toFloatOrNull(Length),

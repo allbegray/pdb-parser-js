@@ -9,14 +9,14 @@ export interface Model {
 /***
  * https://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ANISOU
  */
-export interface Anisou {
+export interface Anisou extends Residue {
     serial: number | null
     name: string | null
     altLoc: string | null
-    resName: string | null
-    chainID: string | null
-    resSeq: number | null
-    iCode: string | null
+    // resName: string | null
+    // chainID: string | null
+    // resSeq: number | null
+    // iCode: string | null
     u00: number | null
     u11: number | null
     u22: number | null
@@ -27,14 +27,14 @@ export interface Anisou {
     charge: string | null
 }
 
-interface CoordinateData {
+interface CoordinateData extends Residue {
     serial: number | null
     name: string | null
     altLoc: string | null
-    resName: string | null
-    chainID: string | null
-    resSeq: number | null
-    iCode: string | null
+    // resName: string | null
+    // chainID: string | null
+    // resSeq: number | null
+    // iCode: string | null
     x: number | null
     y: number | null
     z: number | null
@@ -55,7 +55,7 @@ abstract class Coordinate {
         return {
             resName: this.data.resName,
             chainID: this.data.chainID,
-            seqNum: this.data.resSeq,
+            resSeq: this.data.resSeq,
             iCode: this.data.iCode,
         }
     }

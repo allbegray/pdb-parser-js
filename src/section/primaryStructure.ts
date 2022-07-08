@@ -2,6 +2,7 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
+import {Residue} from "../model";
 
 export interface Dbref {
     idCode: string | null
@@ -19,12 +20,12 @@ export interface Dbref {
     dbinsEnd: string | null
 }
 
-export interface Seqadv {
+export interface Seqadv extends Residue {
     idCode: string | null
-    resName: string | null
-    chainID: string | null
-    seqNum: number | null
-    iCode: string | null
+    // resName: string | null
+    // chainID: string | null
+    // seqNum: number | null
+    // iCode: string | null
     database: string | null
     dbAccession: string | null
     dbRes: string | null
@@ -32,12 +33,12 @@ export interface Seqadv {
     conflict: string | null
 }
 
-export interface Modres {
+export interface Modres extends Residue {
     idCode: string | null
-    resName: string | null
-    chainID: string | null
-    seqNum: number | null
-    iCode: string | null
+    // resName: string | null
+    // chainID: string | null
+    // seqNum: number | null
+    // iCode: string | null
     stdRes: string | null
     comment: string | null
 }
@@ -173,7 +174,7 @@ export class SeqadvParser extends AbstractParser<Seqadv[]> {
                 idCode,
                 resName,
                 chainID,
-                seqNum: toIntOrNull(seqNum),
+                resSeq: toIntOrNull(seqNum),
                 iCode,
                 database,
                 dbAccession,
@@ -217,7 +218,7 @@ export class ModresParser extends AbstractParser<Modres[]> {
                 idCode,
                 resName,
                 chainID,
-                seqNum: toIntOrNull(seqNum),
+                resSeq: toIntOrNull(seqNum),
                 iCode,
                 stdRes,
                 comment,
