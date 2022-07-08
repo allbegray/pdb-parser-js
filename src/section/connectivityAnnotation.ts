@@ -98,13 +98,13 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
             return {
                 serNum: toIntOrNull(serNum),
                 residue1: {
-                    resName: resName1,
+                    resName: resName1 ?? 'CYS',
                     chainID: chainID1,
                     resSeq: toIntOrNull(seqNum1),
                     iCode: icode1,
                 },
                 residue2: {
-                    resName: resName2,
+                    resName: resName2 ?? 'CYS',
                     chainID: chainID2,
                     resSeq: toIntOrNull(seqNum2),
                     iCode: icode2,
