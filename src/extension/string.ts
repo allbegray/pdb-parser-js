@@ -5,10 +5,6 @@ declare global {
         isEmpty(): boolean
 
         isBlank(): boolean
-
-        toIntOrNull(): number | null
-
-        toFloatOrNull: number | null
     }
 }
 
