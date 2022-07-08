@@ -1,6 +1,7 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toIntOrNull} from "../extension/string";
 
 export interface Master {
     numRemark: number | null
@@ -63,17 +64,17 @@ export class MasterParser extends AbstractParser<Master | null> {
         const numSeq = line.extract(66, 70)
 
         return {
-            numRemark: this.toIntOrNull(numRemark),
-            numHet: this.toIntOrNull(numHet),
-            numHelix: this.toIntOrNull(numHelix),
-            numSheet: this.toIntOrNull(numSheet),
-            numTurn: this.toIntOrNull(numTurn),
-            numSite: this.toIntOrNull(numSite),
-            numXform: this.toIntOrNull(numXform),
-            numCoord: this.toIntOrNull(numCoord),
-            numTer: this.toIntOrNull(numTer),
-            numConect: this.toIntOrNull(numConect),
-            numSeq: this.toIntOrNull(numSeq),
+            numRemark: toIntOrNull(numRemark),
+            numHet: toIntOrNull(numHet),
+            numHelix: toIntOrNull(numHelix),
+            numSheet: toIntOrNull(numSheet),
+            numTurn: toIntOrNull(numTurn),
+            numSite: toIntOrNull(numSite),
+            numXform: toIntOrNull(numXform),
+            numCoord: toIntOrNull(numCoord),
+            numTer: toIntOrNull(numTer),
+            numConect: toIntOrNull(numConect),
+            numSeq: toIntOrNull(numSeq),
         }
     }
 }

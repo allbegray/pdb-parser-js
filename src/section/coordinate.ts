@@ -1,5 +1,7 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toFloatOrNull, toIntOrNull} from "../extension/string";
+import {Residue} from "../model";
 
 export interface Model {
 }
@@ -25,10 +27,7 @@ export interface Anisou {
     charge: string | null
 }
 
-export interface Hetatm extends Atom {
-}
-
-export interface Atom {
+interface CoordinateData {
     serial: number | null
     name: string | null
     altLoc: string | null
@@ -43,6 +42,70 @@ export interface Atom {
     tempFactor: number | null
     element: string | null
     charge: string | null
+}
+
+abstract class Coordinate {
+    protected data: CoordinateData
+
+    constructor(data: CoordinateData) {
+        this.data = data;
+    }
+
+    toResidue(): Residue {
+        return {
+            resName: this.data.resName,
+            chainID: this.data.chainID,
+            seqNum: this.data.resSeq,
+            iCode: this.data.iCode,
+        }
+    }
+
+    static lineToCoordinate(line: string): CoordinateData {
+        const serial = line.extract(7, 11)
+        const name = line.extract(13, 16)
+        const altLoc = line.extract(17, 17)
+        const resName = line.extract(18, 20)
+        const chainID = line.extract(22, 22)
+        const resSeq = line.extract(23, 26)
+        const iCode = line.extract(27, 27)
+        const x = line.extract(31, 38)
+        const y = line.extract(39, 46)
+        const z = line.extract(47, 54)
+        const occupancy = line.extract(55, 60)
+        const tempFactor = line.extract(61, 66)
+        const element = line.extract(77, 78)
+        const charge = line.extract(79, 80)
+
+        return {
+            serial: toIntOrNull(serial),
+            name,
+            altLoc,
+            resName,
+            chainID,
+            resSeq: toIntOrNull(resSeq),
+            iCode,
+            x: toFloatOrNull(x),
+            y: toFloatOrNull(y),
+            z: toFloatOrNull(z),
+            occupancy: toFloatOrNull(occupancy),
+            tempFactor: toFloatOrNull(tempFactor),
+            element,
+            charge,
+        }
+    }
+}
+
+export class Hetatm extends Coordinate {
+    isCrystalWater(): boolean {
+        return this.data.resName == 'HOH'
+    }
+
+    isDummy(): boolean {
+        return this.data.resName == 'DUM'
+    }
+}
+
+export class Atom extends Coordinate {
 }
 
 export interface Ter {
@@ -78,37 +141,7 @@ export class AtomParser extends AbstractParser<Atom[]> {
 
     protected _parse(): Atom[] {
         return this.lines.map(line => {
-            const serial = line.extract(7, 11)
-            const name = line.extract(13, 16)
-            const altLoc = line.extract(17, 17)
-            const resName = line.extract(18, 20)
-            const chainID = line.extract(22, 22)
-            const resSeq = line.extract(23, 26)
-            const iCode = line.extract(27, 27)
-            const x = line.extract(31, 38)
-            const y = line.extract(39, 46)
-            const z = line.extract(47, 54)
-            const occupancy = line.extract(55, 60)
-            const tempFactor = line.extract(61, 66)
-            const element = line.extract(77, 78)
-            const charge = line.extract(79, 80)
-
-            return {
-                serial: this.toIntOrNull(serial),
-                name,
-                altLoc,
-                resName,
-                chainID,
-                resSeq: this.toIntOrNull(resSeq),
-                iCode,
-                x: this.toFloatOrNull(x),
-                y: this.toFloatOrNull(y),
-                z: this.toFloatOrNull(z),
-                occupancy: this.toFloatOrNull(occupancy),
-                tempFactor: this.toFloatOrNull(tempFactor),
-                element,
-                charge,
-            }
+            return new Atom(Coordinate.lineToCoordinate(line))
         })
     }
 }
@@ -158,19 +191,19 @@ export class AnisouParser extends AbstractParser<Anisou[]> {
             const charge = line.extract(79, 80)
 
             return {
-                serial: this.toIntOrNull(serial),
+                serial: toIntOrNull(serial),
                 name,
                 altLoc,
                 resName,
                 chainID,
-                resSeq: this.toIntOrNull(resSeq),
+                resSeq: toIntOrNull(resSeq),
                 iCode,
-                u00: this.toIntOrNull(u00),
-                u11: this.toIntOrNull(u11),
-                u22: this.toIntOrNull(u22),
-                u01: this.toIntOrNull(u01),
-                u02: this.toIntOrNull(u02),
-                u12: this.toIntOrNull(u12),
+                u00: toIntOrNull(u00),
+                u11: toIntOrNull(u11),
+                u22: toIntOrNull(u22),
+                u01: toIntOrNull(u01),
+                u02: toIntOrNull(u02),
+                u12: toIntOrNull(u12),
                 element,
                 charge,
             }
@@ -197,10 +230,10 @@ export class AnisouParser extends AbstractParser<Anisou[]> {
  * 77 - 78       LString(2)     element       Element symbol; right-justified.
  * 79 - 80       LString(2)     charge        Charge on the atom.
  */
-export class HetatmParser extends AtomParser {
+export class HetatmParser extends AbstractParser<Hetatm[]> {
     protected excludeDummy: boolean
 
-    protected constructor(excludeDummy: boolean = true) {
+    constructor(excludeDummy: boolean = true) {
         super()
         this.excludeDummy = excludeDummy
     }
@@ -211,5 +244,11 @@ export class HetatmParser extends AtomParser {
             if (resName == 'DUM') return false
         }
         return line.startsWith('HETATM')
+    }
+
+    protected _parse(): Hetatm[] {
+        return this.lines.map(line => {
+            return new Hetatm(Coordinate.lineToCoordinate(line))
+        })
     }
 }

@@ -36,22 +36,6 @@ abstract class AbstractParser<T> implements Parser<T> {
     protected validate(ret: T): boolean {
         return true
     }
-
-    protected toIntOrNull(s: string | null): number | null {
-        if (s) {
-            const value = parseInt(s)
-            return isNaN(value) ? null : value
-        }
-        return null
-    }
-
-    protected toFloatOrNull(s: string | null): number | null {
-        if (s) {
-            const value = parseFloat(s)
-            return isNaN(value) ? null : value
-        }
-        return null
-    }
 }
 
 export {Parser, AbstractParser}

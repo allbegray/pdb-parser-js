@@ -2,6 +2,7 @@
 import '../extension/string';
 import {AbstractParser} from "../parser";
 import {Residue} from "../model";
+import {toIntOrNull} from "../extension/string";
 
 export interface Site {
     seqNum: number
@@ -67,7 +68,7 @@ export class SiteParser extends AbstractParser<Site[]> {
             return {
                 resName,
                 chainID,
-                seqNum: this.toIntOrNull(seq),
+                seqNum: toIntOrNull(seq),
                 iCode,
             }
         }
@@ -98,9 +99,9 @@ export class SiteParser extends AbstractParser<Site[]> {
             const iCode4 = line.extract(61, 61)
 
             return {
-                seqNum: this.toIntOrNull(seqNum)!,
+                seqNum: toIntOrNull(seqNum)!,
                 siteID: siteID!,
-                numRes: this.toIntOrNull(numRes)!,
+                numRes: toIntOrNull(numRes)!,
                 residues: [
                     toResidue(resName1, chainID1, seq1, iCode1),
                     toResidue(resName2, chainID2, seq2, iCode2),

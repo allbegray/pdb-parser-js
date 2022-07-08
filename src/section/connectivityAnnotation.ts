@@ -1,6 +1,7 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toFloatOrNull, toIntOrNull} from "../extension/string";
 
 export interface Ssbond {
     serNum: number | null
@@ -88,18 +89,18 @@ export class SsbondParser extends AbstractParser<Ssbond[]> {
             const Length = line.extract(74, 78)
 
             return {
-                serNum: this.toIntOrNull(serNum),
+                serNum: toIntOrNull(serNum),
                 resName1,
                 chainID1,
-                seqNum1: this.toIntOrNull(seqNum1),
+                seqNum1: toIntOrNull(seqNum1),
                 icode1,
                 resName2,
                 chainID2,
-                seqNum2: this.toIntOrNull(seqNum2),
+                seqNum2: toIntOrNull(seqNum2),
                 icode2,
                 sym1,
                 sym2,
-                Length: this.toFloatOrNull(Length),
+                Length: toFloatOrNull(Length),
             }
         })
     }
@@ -154,17 +155,17 @@ export class LinkParser extends AbstractParser<Link[]> {
                 altLoc1,
                 resName1,
                 chainID1,
-                resSeq1: this.toIntOrNull(resSeq1),
+                resSeq1: toIntOrNull(resSeq1),
                 iCode1,
                 name2,
                 altLoc2,
                 resName2,
                 chainID2,
-                resSeq2: this.toIntOrNull(resSeq2),
+                resSeq2: toIntOrNull(resSeq2),
                 iCode2,
                 sym1,
                 sym2,
-                Length: this.toFloatOrNull(Length),
+                Length: toFloatOrNull(Length),
             }
         })
     }
@@ -207,17 +208,17 @@ export class CispepParser extends AbstractParser<Cispep[]> {
             const measure = line.extract(54, 59)
 
             return {
-                serNum: this.toIntOrNull(serNum),
+                serNum: toIntOrNull(serNum),
                 pep1,
                 chainID1,
-                seqNum1: this.toIntOrNull(seqNum1),
+                seqNum1: toIntOrNull(seqNum1),
                 icode1,
                 pep2,
                 chainID2,
-                seqNum2: this.toIntOrNull(seqNum2),
+                seqNum2: toIntOrNull(seqNum2),
                 icode2,
-                modNum: this.toIntOrNull(modNum),
-                measure: this.toFloatOrNull(measure),
+                modNum: toIntOrNull(modNum),
+                measure: toFloatOrNull(measure),
             }
         })
     }

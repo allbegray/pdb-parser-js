@@ -1,6 +1,7 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toIntOrNull} from "../extension/string";
 
 export interface Het {
     hetID: string | null
@@ -59,9 +60,9 @@ export class HetParser extends AbstractParser<Het[]> {
             return {
                 hetID,
                 ChainID,
-                seqNum: this.toIntOrNull(seqNum),
+                seqNum: toIntOrNull(seqNum),
                 iCode,
-                numHetAtoms: this.toIntOrNull(numHetAtoms),
+                numHetAtoms: toIntOrNull(numHetAtoms),
                 text,
             }
         })
@@ -176,9 +177,9 @@ export class FormulParser extends AbstractParser<Formul[]> {
             const text = line.extract(20, 70)
 
             return {
-                compNum: this.toIntOrNull(compNum),
+                compNum: toIntOrNull(compNum),
                 hetID,
-                continuation: this.toIntOrNull(continuation),
+                continuation: toIntOrNull(continuation),
                 asterisk,
                 text
             }

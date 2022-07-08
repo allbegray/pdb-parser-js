@@ -5,6 +5,10 @@ declare global {
         isEmpty(): boolean
 
         isBlank(): boolean
+
+        toIntOrNull(): number | null
+
+        toFloatOrNull: number | null
     }
 }
 
@@ -25,5 +29,21 @@ String.prototype.isEmpty = function (): boolean {
 String.prototype.isBlank = function (): boolean {
     return !this || !this.trim().length
 };
+
+export function toIntOrNull(s: string | null): number | null {
+    if (s) {
+        const value = parseInt(s)
+        return isNaN(value) ? null : value
+    }
+    return null
+}
+
+export function toFloatOrNull(s: string | null): number | null {
+    if (s) {
+        const value = parseFloat(s)
+        return isNaN(value) ? null : value
+    }
+    return null
+}
 
 export {}

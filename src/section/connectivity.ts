@@ -1,6 +1,7 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toIntOrNull} from "../extension/string";
 
 export interface Conect {
     atomSeqNum: number
@@ -34,8 +35,8 @@ export class ConectParser extends AbstractParser<Conect[]> {
             ]
 
             return {
-                atomSeqNum: this.toIntOrNull(atomSeqNum)!,
-                bondedAtomSeqNums: bondedAtomSeqNums.filter(it => it).map(it => this.toIntOrNull(it)!) as number[]
+                atomSeqNum: toIntOrNull(atomSeqNum)!,
+                bondedAtomSeqNums: bondedAtomSeqNums.filter(it => it).map(it => toIntOrNull(it)!) as number[]
             }
         })
     }

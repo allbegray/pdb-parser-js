@@ -1,6 +1,7 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toFloatOrNull, toIntOrNull} from "../extension/string";
 
 export interface Cryst1 {
     a: number | null
@@ -74,14 +75,14 @@ export class Cryst1Parser extends AbstractParser<Cryst1 | null> {
         const z = line.extract(67, 70)
 
         return {
-            a: this.toFloatOrNull(a),
-            b: this.toFloatOrNull(b),
-            c: this.toFloatOrNull(c),
-            alpha: this.toFloatOrNull(alpha),
-            beta: this.toFloatOrNull(beta),
-            gamma: this.toFloatOrNull(gamma),
+            a: toFloatOrNull(a),
+            b: toFloatOrNull(b),
+            c: toFloatOrNull(c),
+            alpha: toFloatOrNull(alpha),
+            beta: toFloatOrNull(beta),
+            gamma: toFloatOrNull(gamma),
             sGroup,
-            z: this.toIntOrNull(z)
+            z: toIntOrNull(z)
         }
     }
 }
@@ -111,10 +112,10 @@ export class OrigxParser extends AbstractParser<Origx[]> {
 
             return {
                 recordName: recordName!,
-                On1: this.toFloatOrNull(On1),
-                On2: this.toFloatOrNull(On2),
-                On3: this.toFloatOrNull(On3),
-                Tn: this.toFloatOrNull(Tn),
+                On1: toFloatOrNull(On1),
+                On2: toFloatOrNull(On2),
+                On3: toFloatOrNull(On3),
+                Tn: toFloatOrNull(Tn),
             }
         })
     }
@@ -145,10 +146,10 @@ export class ScaleParser extends AbstractParser<Scale[]> {
 
             return {
                 recordName: recordName!,
-                Sn1: this.toFloatOrNull(Sn1),
-                Sn2: this.toFloatOrNull(Sn2),
-                Sn3: this.toFloatOrNull(Sn3),
-                Un: this.toFloatOrNull(Un),
+                Sn1: toFloatOrNull(Sn1),
+                Sn2: toFloatOrNull(Sn2),
+                Sn3: toFloatOrNull(Sn3),
+                Un: toFloatOrNull(Un),
             }
         })
     }
@@ -186,12 +187,12 @@ export class MtrixParser extends AbstractParser<Mtrix[]> {
 
             return {
                 recordName: recordName!,
-                serial: this.toIntOrNull(serial),
-                Mn1: this.toFloatOrNull(Mn1),
-                Mn2: this.toFloatOrNull(Mn2),
-                Mn3: this.toFloatOrNull(Mn3),
-                Vn: this.toFloatOrNull(Vn),
-                iGiven: this.toIntOrNull(iGiven),
+                serial: toIntOrNull(serial),
+                Mn1: toFloatOrNull(Mn1),
+                Mn2: toFloatOrNull(Mn2),
+                Mn3: toFloatOrNull(Mn3),
+                Vn: toFloatOrNull(Vn),
+                iGiven: toIntOrNull(iGiven),
             }
         })
     }

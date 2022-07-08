@@ -1,6 +1,7 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toIntOrNull} from "../extension/string";
 
 /***
  * https://www.wwpdb.org/documentation/file-format-content/format33/sect5.html#HELIX
@@ -103,22 +104,22 @@ export class HelixParser extends AbstractParser<Helix[]> {
             const length = line.extract(72, 76)
 
             return {
-                serNum: this.toIntOrNull(serNum),
+                serNum: toIntOrNull(serNum),
                 helixID,
 
                 initResName,
                 initChainID,
-                initSeqNum: this.toIntOrNull(initSeqNum),
+                initSeqNum: toIntOrNull(initSeqNum),
                 initICode,
 
                 endResName,
                 endChainID,
-                endSeqNum: this.toIntOrNull(endSeqNum),
+                endSeqNum: toIntOrNull(endSeqNum),
                 endICode,
 
-                helixClass: this.toIntOrNull(helixClass),
+                helixClass: toIntOrNull(helixClass),
                 comment,
-                length: this.toIntOrNull(length),
+                length: toIntOrNull(length),
             }
         })
     }
@@ -201,32 +202,32 @@ export class SheetParser extends AbstractParser<Sheet[]> {
             const prevICode = line.extract(70, 70)
 
             return {
-                strand: this.toIntOrNull(strand),
+                strand: toIntOrNull(strand),
                 sheetID,
-                numStrands: this.toIntOrNull(numStrands),
+                numStrands: toIntOrNull(numStrands),
 
                 initResName,
                 initChainID,
-                initSeqNum: this.toIntOrNull(initSeqNum),
+                initSeqNum: toIntOrNull(initSeqNum),
                 initICode,
 
                 endResName,
                 endChainID,
-                endSeqNum: this.toIntOrNull(endSeqNum),
+                endSeqNum: toIntOrNull(endSeqNum),
                 endICode,
 
-                sense: this.toIntOrNull(sense),
+                sense: toIntOrNull(sense),
 
                 curAtom,
                 curResName,
                 curChainId,
-                curResSeq: this.toIntOrNull(curResSeq),
+                curResSeq: toIntOrNull(curResSeq),
                 curICode,
 
                 prevAtom,
                 prevResName,
                 prevChainId,
-                prevResSeq: this.toIntOrNull(prevResSeq),
+                prevResSeq: toIntOrNull(prevResSeq),
                 prevICode,
             }
         })

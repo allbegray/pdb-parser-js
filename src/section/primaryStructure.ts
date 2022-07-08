@@ -1,6 +1,7 @@
 // 100%
 import '../extension/string';
 import {AbstractParser} from "../parser";
+import {toIntOrNull} from "../extension/string";
 
 export interface Dbref {
     idCode: string | null
@@ -118,16 +119,16 @@ export class DbrefParser extends AbstractParser<Dbref[]> {
             return {
                 idCode,
                 chainID,
-                seqBegin: this.toIntOrNull(seqBegin),
+                seqBegin: toIntOrNull(seqBegin),
                 insertBegin,
-                seqEnd: this.toIntOrNull(seqEnd),
+                seqEnd: toIntOrNull(seqEnd),
                 insertEnd,
                 database,
                 dbAccession,
                 dbIdCode,
-                dbseqBegin: this.toIntOrNull(dbseqBegin),
+                dbseqBegin: toIntOrNull(dbseqBegin),
                 idbnsBeg,
-                dbseqEnd: this.toIntOrNull(dbseqEnd),
+                dbseqEnd: toIntOrNull(dbseqEnd),
                 dbinsEnd,
             }
         })
@@ -172,12 +173,12 @@ export class SeqadvParser extends AbstractParser<Seqadv[]> {
                 idCode,
                 resName,
                 chainID,
-                seqNum: this.toIntOrNull(seqNum),
+                seqNum: toIntOrNull(seqNum),
                 iCode,
                 database,
                 dbAccession,
                 dbRes,
-                dbSeq: this.toIntOrNull(dbSeq),
+                dbSeq: toIntOrNull(dbSeq),
                 conflict
             }
         })
@@ -216,7 +217,7 @@ export class ModresParser extends AbstractParser<Modres[]> {
                 idCode,
                 resName,
                 chainID,
-                seqNum: this.toIntOrNull(seqNum),
+                seqNum: toIntOrNull(seqNum),
                 iCode,
                 stdRes,
                 comment,
@@ -263,9 +264,9 @@ export class Dbref1Parser extends AbstractParser<Dbref1[]> {
             return {
                 idCode,
                 chainID,
-                seqBegin: this.toIntOrNull(seqBegin),
+                seqBegin: toIntOrNull(seqBegin),
                 insertBegin,
-                seqEnd: this.toIntOrNull(seqEnd),
+                seqEnd: toIntOrNull(seqEnd),
                 insertEnd,
                 database,
                 dbIdCode,
@@ -305,8 +306,8 @@ export class Dbref2Parser extends AbstractParser<Dbref2[]> {
                 idCode,
                 chainID,
                 dbAccession,
-                seqBegin: this.toIntOrNull(seqBegin),
-                seqEnd: this.toIntOrNull(seqEnd),
+                seqBegin: toIntOrNull(seqBegin),
+                seqEnd: toIntOrNull(seqEnd),
             }
         })
     }
@@ -366,9 +367,9 @@ export class SeqresParser extends AbstractParser<Seqres[]> {
             ]
 
             return {
-                serNum: this.toIntOrNull(serNum),
+                serNum: toIntOrNull(serNum),
                 chainID,
-                numRes: this.toIntOrNull(numRes),
+                numRes: toIntOrNull(numRes),
                 resNames: resNames.filter(it => it) as string[],
             }
         })
