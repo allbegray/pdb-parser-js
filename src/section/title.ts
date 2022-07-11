@@ -24,6 +24,20 @@ export interface Caveat {
     comment: string | null
 }
 
+export interface Revdat {
+    modNum: number | null
+    modDate: string | null
+    modId: string | null
+    modType: string | null
+    records: string[]
+}
+
+export interface Sprsde {
+    sprsdeDate: string | null
+    idCode: string | null
+    sIdCodes: string[]
+}
+
 /***
  * remark 465
  */
@@ -132,7 +146,6 @@ export class ObslteParser extends AbstractParser<Obslte[]> {
     }
 }
 
-
 /***
  * COLUMNS       DATA  TYPE     FIELD         DEFINITION
  * ----------------------------------------------------------------------------------
@@ -200,7 +213,6 @@ export class SplitParser extends AbstractParser<string[]> {
         })
     }
 }
-
 
 /***
  * COLUMNS       DATA  TYPE    FIELD          DEFINITION
