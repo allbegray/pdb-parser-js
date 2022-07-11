@@ -15,6 +15,10 @@ export interface Obslte {
     rIdCodes: string[]
 }
 
+export interface CompndOrSource {
+    [key: string]: string
+}
+
 /***
  * remark 465
  */
@@ -255,6 +259,216 @@ export class SplitParser extends AbstractParser<string[]> {
                 line.extract(77, 80),
             ].filter(it => it) as string[]
         })
+    }
+}
+
+abstract class CompndOrSourceParser extends AbstractParser<CompndOrSource[]> {
+
+    protected abstract tokens(): string[]
+
+    private isTokenBegin(line: string): boolean {
+        const tokens = this.tokens()
+        for (const token of tokens) {
+            if (line.startsWith(`${token}:`)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    protected _parse(): CompndOrSource[] {
+        const lines = this.lines.map(line => line.extract(11, 80)).filter(it => it)
+
+        const tokens = this.tokens()
+        const fixedLines: string[] = []
+        for (const line of lines) {
+            if (!line) continue
+
+            let findToken = this.isTokenBegin(line)
+            if (findToken) {
+                fixedLines.push(line)
+            } else {
+                fixedLines[fixedLines.length - 1] += line
+            }
+        }
+
+        const results: CompndOrSource[] = []
+        let compnd: CompndOrSource | null = null
+        for (let fixedLine of fixedLines) {
+            if (fixedLine.startsWith('MOL_ID:')) {
+                if (compnd != null) {
+                    results.push(compnd)
+                }
+                compnd = {}
+            }
+            const indexOf = fixedLine.indexOf(':')
+            const key = fixedLine.substring(0, indexOf)
+            const value = fixedLine.substring(indexOf + 1).trim()
+
+            compnd![key] = value.endsWith(';') ? value.slice(0, -1) : value
+        }
+        if (compnd != null) {
+            results.push(compnd)
+        }
+
+        return results
+    }
+}
+
+/***
+ * COLUMNS       DATA TYPE       FIELD         DEFINITION
+ * ----------------------------------------------------------------------------------
+ *  1 -  6       Record name     "COMPND"
+ *  8 - 10       Continuation    continuation  Allows concatenation of multiple records.
+ * 11 - 80       Specification   compound      Description of the molecular components.
+ *               list
+ *
+ * Details
+ *
+ * The compound record is a Specification list. The specifications, or tokens, that may be used are listed below:
+ * TOKEN                  VALUE DEFINITION
+ * -------------------------------------------------------------------------
+ * MOL_ID                 Numbers each component; also used in  SOURCE to associate
+ *                        the information.
+ * MOLECULE               Name of the macromolecule.
+ * CHAIN                  Comma-separated list of chain  identifier(s).
+ * FRAGMENT               Specifies a domain or region of the  molecule.
+ * SYNONYM                Comma-separated list of synonyms for  the MOLECULE.
+ * EC                     The Enzyme Commission number associated  with the molecule.
+ *                        If there is more than one EC number,  they are presented
+ *                        as a comma-separated list.
+ * ENGINEERED             Indicates that the molecule was  produced using
+ *                        recombinant technology or by purely  chemical synthesis.
+ * MUTATION               Indicates if there is a mutation.
+ * OTHER_DETAILS          Additional comments.
+ */
+export class CompndParser extends CompndOrSourceParser {
+
+    protected tokens(): string[] {
+        return [
+            'MOL_ID',
+            'MOLECULE',
+            'CHAIN',
+            'FRAGMENT',
+            'SYNONYM',
+            'EC',
+            'ENGINEERED',
+            'MUTATION',
+            'OTHER_DETAILS',
+        ]
+    }
+
+    protected match(line: string): boolean {
+        return line.startsWith('COMPND')
+    }
+}
+
+/***
+ * COLUMNS      DATA  TYPE     FIELD          DEFINITION
+ * --------------------------------------------------------------------------------------
+ *  1 -  6      Record name    "SOURCE"
+ *  8 - 10      Continuation   continuation   Allows concatenation of multiple records.
+ * 11 - 79      Specification  srcName        Identifies the source of the
+ *              List                          macromolecule in a  token: value format.
+ *
+ * Details
+ *
+ * TOKEN                                VALUE  DEFINITION
+ * --------------------------------------------------------------------------------------
+ * MOL_ID                               Numbers each  molecule. Same as appears in COMPND.
+ * SYNTHETIC                            Indicates a  chemically-synthesized source.
+ * FRAGMENT                             A domain or  fragment of the molecule may be
+ *                                      specified.
+ * ORGANISM_SCIENTIFIC                  Scientific name of the  organism.
+ * ORGANISM_COMMON                      Common name of the  organism.
+ * ORGANISM_TAXID                       NCBI Taxonomy ID number  of the organism.
+ * STRAIN                               Identifies the  strain.
+ * VARIANT                              Identifies the  variant.
+ * CELL_LINE                            The specific line of  cells used in the experiment.
+ * ATCC                                 American Type  Culture Collection tissue
+ *                                      culture  number.
+ * ORGAN                                Organized group of  tissues that carries on
+ *                                      a specialized function.
+ * TISSUE                               Organized group  of cells with a common
+ *                                      function and  structure.
+ * CELL                                 Identifies the  particular cell type.
+ * ORGANELLE                            Organized structure  within a cell.
+ * SECRETION                            Identifies the secretion, such as  saliva, urine,
+ *                                      or venom,  from which the molecule was isolated.
+ * CELLULAR_LOCATION                    Identifies the location  inside/outside the cell.
+ * PLASMID                              Identifies the plasmid  containing the gene.
+ * GENE                                 Identifies the  gene.
+ * EXPRESSION_SYSTEM                    Scientific name of the organism in  which the
+ *                                      molecule was expressed.
+ * EXPRESSION_SYSTEM_COMMON             Common name of the organism in  which the molecule
+ *                                      was  expressed.
+ * EXPRESSION_SYSTEM_TAXID              NCBI Taxonomy ID of the organism  used as the
+ *                                      expression  system.
+ * EXPRESSION_SYSTEM_STRAIN             Strain of the organism in which  the molecule
+ *                                      was  expressed.
+ * EXPRESSION_SYSTEM_VARIANT            Variant of the organism used as the
+ *                                      expression  system.
+ * EXPRESSION_SYSTEM_CELL_LINE          The specific line of cells used as  the
+ *                                      expression  system.
+ * EXPRESSION_SYSTEM_ATCC_NUMBER        Identifies the ATCC number of the  expression system.
+ * EXPRESSION_SYSTEM_ORGAN              Specific organ which expressed  the molecule.
+ * EXPRESSION_SYSTEM_TISSUE             Specific tissue which expressed  the molecule.
+ * EXPRESSION_SYSTEM_CELL               Specific cell type which  expressed the molecule.
+ * EXPRESSION_SYSTEM_ORGANELLE          Specific organelle which expressed  the molecule.
+ * EXPRESSION_SYSTEM_CELLULAR_LOCATION  Identifies the location inside or outside
+ *                                      the cell  which expressed the molecule.
+ * EXPRESSION_SYSTEM_VECTOR_TYPE        Identifies the type of vector used,  i.e.,
+ *                                      plasmid,  virus, or cosmid.
+ * EXPRESSION_SYSTEM_VECTOR             Identifies the vector used.
+ * EXPRESSION_SYSTEM_PLASMID            Plasmid used in the recombinant experiment.
+ * EXPRESSION_SYSTEM_GENE               Name of the gene used in  recombinant experiment.
+ * OTHER_DETAILS                        Used to present  information on the source which
+ *                                      is not  given elsewhere.
+ */
+export class SourceParser extends CompndOrSourceParser {
+
+    protected tokens(): string[] {
+        return [
+            'MOL_ID',
+            'SYNTHETIC',
+            'FRAGMENT',
+            'ORGANISM_SCIENTIFIC',
+            'ORGANISM_COMMON',
+            'ORGANISM_TAXID',
+            'STRAIN',
+            'VARIANT',
+            'CELL_LINE',
+            'ATCC',
+            'ORGAN',
+            'TISSUE',
+            'CELL',
+            'ORGANELLE',
+            'SECRETION',
+            'CELLULAR_LOCATION',
+            'PLASMID',
+            'GENE',
+            'EXPRESSION_SYSTEM',
+            'EXPRESSION_SYSTEM_COMMON',
+            'EXPRESSION_SYSTEM_TAXID',
+            'EXPRESSION_SYSTEM_STRAIN',
+            'EXPRESSION_SYSTEM_VARIANT',
+            'EXPRESSION_SYSTEM_CELL_LINE',
+            'EXPRESSION_SYSTEM_ATCC_NUMBER',
+            'EXPRESSION_SYSTEM_ORGAN',
+            'EXPRESSION_SYSTEM_TISSUE',
+            'EXPRESSION_SYSTEM_CELL',
+            'EXPRESSION_SYSTEM_ORGANELLE',
+            'EXPRESSION_SYSTEM_CELLULAR_LOCATION',
+            'EXPRESSION_SYSTEM_VECTOR_TYPE',
+            'EXPRESSION_SYSTEM_VECTOR',
+            'EXPRESSION_SYSTEM_PLASMID',
+            'EXPRESSION_SYSTEM_GENE',
+            'OTHER_DETAILS',
+        ]
+    }
+
+    protected match(line: string): boolean {
+        return line.startsWith('SOURCE')
     }
 }
 
