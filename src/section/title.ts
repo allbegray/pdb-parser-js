@@ -19,6 +19,11 @@ export interface CompndOrSource {
     [key: string]: string
 }
 
+export interface Caveat {
+    idCode: string | null
+    comment: string | null
+}
+
 /***
  * remark 465
  */
@@ -80,29 +85,6 @@ export class HeaderParser extends AbstractParser<Header> {
 }
 
 /***
- * COLUMNS      DATA  TYPE      FIELD         DEFINITION
- * ------------------------------------------------------------------------------------
- *  1 -  6      Record name     "AUTHOR"
- *  9 - 10      Continuation    continuation  Allows concatenation of multiple records.
- * 11 - 79      List            authorList    List of the author names, separated
- *                                            by commas.
- */
-export class AuthorParser extends AbstractParser<string[]> {
-
-    protected match(line: string): boolean {
-        return line.startsWith('AUTHOR')
-    }
-
-    protected _parse(): string[] {
-        return this.lines.map(it => it.extract(11))
-            .filter(it => it)
-            .join('')
-            .split(",")
-            .map(it => it.trim()) as string[]
-    }
-}
-
-/***
  * COLUMNS       DATA  TYPE     FIELD         DEFINITION
  * ---------------------------------------------------------------------------------------
  *  1 -  6       Record name   "OBSLTE"
@@ -150,28 +132,6 @@ export class ObslteParser extends AbstractParser<Obslte[]> {
     }
 }
 
-/***
- * COLUMNS       DATA  TYPE     FIELD         DEFINITION
- * ---------------------------------------------------------------------------------
- *  1 -  6       Record name    "KEYWDS"
- *  9 - 10       Continuation   continuation  Allows concatenation of records if necessary.
- * 11 - 79       List           keywds        Comma-separated list of keywords relevant
- *                                            to the entry.
- */
-export class KeywdsParser extends AbstractParser<string[]> {
-
-    protected match(line: string): boolean {
-        return line.startsWith('KEYWDS')
-    }
-
-    protected _parse(): string[] {
-        return this.lines.map(it => it.extract(11))
-            .filter(it => it)
-            .join('')
-            .split(",")
-            .map(it => it.trim()) as string[]
-    }
-}
 
 /***
  * COLUMNS       DATA  TYPE     FIELD         DEFINITION
@@ -190,27 +150,6 @@ export class TitleParser extends AbstractParser<string | null> {
         const title = this.lines.map(it => it.extract(11)).join(' ')
         if (title.isBlank()) return null
         return title
-    }
-}
-
-/***
- * COLUMNS       DATA TYPE      FIELD         DEFINITION
- * ------------------------------------------------------------------------------------
- *  1 -  6       Record name    "EXPDTA"
- *  9 - 10       Continuation   continuation  Allows concatenation of multiple records.
- * 11 - 79       SList          technique     The experimental technique(s) with
- *                                            optional comment describing the
- *                                            sample or experiment.
- */
-export class ExpdtaParser extends AbstractParser<string[]> {
-
-    protected match(line: string): boolean {
-        return line.startsWith('EXPDTA')
-    }
-
-    protected _parse(): string[] {
-        return this.lines.map(it => it.extract(11))
-            .filter(it => it) as string[]
     }
 }
 
@@ -262,6 +201,34 @@ export class SplitParser extends AbstractParser<string[]> {
     }
 }
 
+
+/***
+ * COLUMNS       DATA  TYPE    FIELD          DEFINITION
+ * ---------------------------------------------------------------------------------------
+ *   1 - 6       Record name   "CAVEAT"
+ *  9 - 10       Continuation  continuation   Allows concatenation of multiple records.
+ * 12 - 15       IDcode        idCode         PDB ID code of this entry.
+ * 20 - 79       String        comment        Free text giving the reason for the  CAVEAT.
+ */
+export class CaveatParser extends AbstractParser<Caveat[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('CAVEAT')
+    }
+
+    protected _parse(): Caveat[] {
+        return this.lines.flatMap(line => {
+            const idCode = line.extract(12, 15)
+            const comment = line.extract(20, 79)
+
+            return {
+                idCode,
+                comment,
+            }
+        })
+    }
+}
+
 abstract class CompndOrSourceParser extends AbstractParser<CompndOrSource[]> {
 
     protected abstract tokens(): string[]
@@ -279,7 +246,6 @@ abstract class CompndOrSourceParser extends AbstractParser<CompndOrSource[]> {
     protected _parse(): CompndOrSource[] {
         const lines = this.lines.map(line => line.extract(11, 80)).filter(it => it)
 
-        const tokens = this.tokens()
         const fixedLines: string[] = []
         for (const line of lines) {
             if (!line) continue
@@ -471,6 +437,122 @@ export class SourceParser extends CompndOrSourceParser {
         return line.startsWith('SOURCE')
     }
 }
+
+/***
+ * COLUMNS       DATA  TYPE     FIELD         DEFINITION
+ * ---------------------------------------------------------------------------------
+ *  1 -  6       Record name    "KEYWDS"
+ *  9 - 10       Continuation   continuation  Allows concatenation of records if necessary.
+ * 11 - 79       List           keywds        Comma-separated list of keywords relevant
+ *                                            to the entry.
+ */
+export class KeywdsParser extends AbstractParser<string[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('KEYWDS')
+    }
+
+    protected _parse(): string[] {
+        return this.lines.map(it => it.extract(11))
+            .filter(it => it)
+            .join('')
+            .split(",")
+            .map(it => it.trim()) as string[]
+    }
+}
+
+/***
+ * COLUMNS       DATA TYPE      FIELD         DEFINITION
+ * ------------------------------------------------------------------------------------
+ *  1 -  6       Record name    "EXPDTA"
+ *  9 - 10       Continuation   continuation  Allows concatenation of multiple records.
+ * 11 - 79       SList          technique     The experimental technique(s) with
+ *                                            optional comment describing the
+ *                                            sample or experiment.
+ */
+export class ExpdtaParser extends AbstractParser<string[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('EXPDTA')
+    }
+
+    protected _parse(): string[] {
+        return this.lines.map(it => it.extract(11))
+            .filter(it => it) as string[]
+    }
+}
+
+/***
+ * COLUMNS      DATA TYPE      FIELD         DEFINITION
+ * ------------------------------------------------------------------------------------
+ *  1 -  6      Record name    "NUMMDL"
+ * 11 - 14      Integer        modelNumber   Number of models.
+ */
+export class NummdlParser extends AbstractParser<number | null> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('NUMMDL')
+    }
+
+    protected _parse(): number | null {
+        if (this.lines.length == 0)
+            return null
+        const line = this.lines[0]
+
+        const modelNumber = line.extract(11, 14)
+        return toIntOrNull(modelNumber)
+    }
+}
+
+/***
+ * COLUMNS      DATA TYPE      FIELD         DEFINITION
+ * ------------------------------------------------------------------------------------
+ *  1 -  6      Record name    "MDLTYP"
+ *  9 - 10      Continuation   continuation  Allows concatenation of multiple records.
+ * 11 - 80      SList          comment       Free Text providing  additional structural
+ *                                           annotation.
+ */
+export class MdltypParser extends AbstractParser<string[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('MDLTYP')
+    }
+
+    protected _parse(): string[] {
+        return this.lines.map(line => line.extract(11, 48))
+            .filter(it => it) as string[]
+    }
+}
+
+/***
+ * COLUMNS      DATA  TYPE      FIELD         DEFINITION
+ * ------------------------------------------------------------------------------------
+ *  1 -  6      Record name     "AUTHOR"
+ *  9 - 10      Continuation    continuation  Allows concatenation of multiple records.
+ * 11 - 79      List            authorList    List of the author names, separated
+ *                                            by commas.
+ */
+export class AuthorParser extends AbstractParser<string[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('AUTHOR')
+    }
+
+    protected _parse(): string[] {
+        return this.lines.map(it => it.extract(11))
+            .filter(it => it)
+            .join('')
+            .split(",")
+            .map(it => it.trim()) as string[]
+    }
+}
+
+// TODO : REVDAT
+
+// TODO : SPRSDE
+
+// TODO : JRNL
+
 
 /***
  * COLUMNS       DATA TYPE     FIELD         DEFINITION
