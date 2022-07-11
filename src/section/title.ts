@@ -617,12 +617,12 @@ export class RevdatParser extends AbstractParser<Revdat[]> {
         for (const revdat of revdats) {
             if (revdat.modNum == prevModNum) {
                 const lastIndex = fixedRevdats.length - 1
-                const last = fixedRevdats[lastIndex]
+                const {records, ...last} = {...fixedRevdats[lastIndex]}
 
                 fixedRevdats[lastIndex] = {
                     ...last,
                     records: [
-                        ...last.records,
+                        ...records,
                         ...revdat.records
                     ]
                 }
