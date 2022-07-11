@@ -25,7 +25,7 @@ export interface Caveat {
 }
 
 export interface Revdat {
-    modNum: number | null
+    modNum: number
     modDate: string | null
     modId: string | null
     modType: string | null
@@ -559,7 +559,77 @@ export class AuthorParser extends AbstractParser<string[]> {
     }
 }
 
-// TODO : REVDAT
+/***
+ * COLUMNS       DATA  TYPE     FIELD         DEFINITION
+ * -------------------------------------------------------------------------------------
+ *  1 -  6       Record name    "REVDAT"
+ *  8 - 10       Integer        modNum        Modification number.
+ * 11 - 12       Continuation   continuation  Allows concatenation of multiple records.
+ * 14 - 22       Date           modDate       Date of modification (or release  for
+ *                                            new entries)  in DD-MMM-YY format. This is
+ *                                            not repeated on continued lines.
+ * 24 - 27       IDCode         modId         ID code of this entry. This is not repeated on
+ *                                            continuation lines.
+ * 32            Integer        modType       An integer identifying the type of
+ *                                            modification. For all  revisions, the
+ *                                            modification type is listed as 1
+ * 40 - 45       LString(6)     record        Modification detail.
+ * 47 - 52       LString(6)     record        Modification detail.
+ * 54 - 59       LString(6)     record        Modification detail.
+ * 61 - 66       LString(6)     record        Modification detail.
+ * Details
+ */
+export class RevdatParser extends AbstractParser<Revdat[]> {
+    protected sortDesc: boolean
+
+    constructor(sortDesc: boolean = true) {
+        super();
+        this.sortDesc = sortDesc
+    }
+
+    protected match(line: string): boolean {
+        return line.startsWith('REVDAT')
+    }
+
+    protected _parse(): Revdat[] {
+        const revdats: Revdat[] = this.lines.map(line => {
+            const modNum = line.extract(8, 10)
+            const modDate = line.extract(14, 22)
+            const modId = line.extract(24, 27)
+            const modType = line.extract(32, 32)
+            const records = [
+                line.extract(40, 45),
+                line.extract(47, 52),
+                line.extract(54, 59),
+                line.extract(61, 66),
+            ]
+
+            return {
+                modNum: toIntOrNull(modNum)!,
+                modDate,
+                modId,
+                modType,
+                records: records.filter(it => it) as string[]
+            }
+        })
+
+        const fixedRevdats: Revdat[] = []
+        let prevModNum: number | null = null
+        for (const revdat of revdats) {
+            if (revdat.modNum == prevModNum) {
+                const lastIndex = fixedRevdats.length - 1
+                const last = fixedRevdats[lastIndex]
+                last.records.push(...revdat.records)
+
+                fixedRevdats[lastIndex] = last
+            } else {
+                fixedRevdats.push(revdat)
+            }
+            prevModNum = revdat.modNum
+        }
+        return fixedRevdats.sort(a => a.modNum * (this.sortDesc ? 1 : -1))
+    }
+}
 
 // TODO : SPRSDE
 
