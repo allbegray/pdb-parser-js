@@ -577,7 +577,6 @@ export class AuthorParser extends AbstractParser<string[]> {
  * 47 - 52       LString(6)     record        Modification detail.
  * 54 - 59       LString(6)     record        Modification detail.
  * 61 - 66       LString(6)     record        Modification detail.
- * Details
  */
 export class RevdatParser extends AbstractParser<Revdat[]> {
     protected sortDesc: boolean
@@ -631,7 +630,56 @@ export class RevdatParser extends AbstractParser<Revdat[]> {
     }
 }
 
-// TODO : SPRSDE
+/***
+ * COLUMNS        DATA TYPE     FIELD         DEFINITION
+ * -----------------------------------------------------------------------------------
+ *  1 -  6        Record name   "SPRSDE"
+ *  9 - 10        Continuation  continuation  Allows for multiple ID codes.
+ * 12 - 20        Date          sprsdeDate    Date this entry superseded the listed
+ *                                            entries. This field is not copied on
+ *                                            continuations.
+ * 22 - 25        IDcode        idCode        ID code of this entry. This field is  not
+ *                                            copied on continuations.
+ * 32 - 35        IDcode        sIdCode       ID code of a superseded entry.
+ * 37 - 40        IDcode        sIdCode       ID code of a superseded entry.
+ * 42 - 45        IDcode        sIdCode       ID code of a superseded entry.
+ * 47 - 50        IDcode        sIdCode       ID code of a superseded entry.
+ * 52 - 55        IDcode        sIdCode       ID code of a superseded entry.
+ * 57 - 60        IDcode        sIdCode       ID code of a superseded entry.
+ * 62 - 65        IDcode        sIdCode       ID code of a superseded entry.
+ * 67 - 70        IDcode        sIdCode       ID code of a superseded entry.
+ * 72 - 75        IDcode        sIdCode       ID code of a superseded entry.
+ */
+export class SprsdeParser extends AbstractParser<Sprsde[]> {
+
+    protected match(line: string): boolean {
+        return line.startsWith('SPRSDE')
+    }
+
+    protected _parse(): Sprsde[] {
+        return this.lines.map(line => {
+            const sprsdeDate = line.extract(12, 20)
+            const idCode = line.extract(22, 25)
+            const sIdCodes = [
+                line.extract(32, 35),
+                line.extract(37, 40),
+                line.extract(42, 45),
+                line.extract(47, 50),
+                line.extract(52, 55),
+                line.extract(57, 60),
+                line.extract(62, 65),
+                line.extract(67, 70),
+                line.extract(72, 75),
+            ]
+
+            return {
+                sprsdeDate,
+                idCode,
+                sIdCodes: sIdCodes.filter(it => it) as string[]
+            }
+        })
+    }
+}
 
 // TODO : JRNL
 
