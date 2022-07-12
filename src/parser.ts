@@ -1,10 +1,12 @@
-interface Parser<T> {
+import {Section} from "./model";
+
+export interface Parser<T> {
     collect(line: string): void
 
     parse(): T
 }
 
-abstract class AbstractParser<T> implements Parser<T> {
+export abstract class AbstractParser<T> implements Parser<T> {
     protected lines: string[] = []
 
     collect(line: string | string[]): void {
@@ -38,4 +40,7 @@ abstract class AbstractParser<T> implements Parser<T> {
     }
 }
 
-export {Parser, AbstractParser}
+export abstract class SectionParser<T extends Section> {
+
+    abstract parse(line: string | string[]): T
+}

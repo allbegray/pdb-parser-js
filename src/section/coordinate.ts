@@ -1,7 +1,7 @@
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
-import {Residue, ResidueWithAtom} from "../model";
+import {Residue, ResidueWithAtom, Section} from "../model";
 
 export interface Model {
 }
@@ -250,5 +250,36 @@ export class HetatmParser extends AbstractParser<Hetatm[]> {
         return this.lines.map(line => {
             return new Hetatm(Coordinate.lineToCoordinate(line))
         })
+    }
+}
+
+export interface CoordinateSection extends Section {
+    atoms: Atom[]
+    anisous: Anisou[]
+    hetatms: Hetatm[]
+}
+
+export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
+    protected atomParer: AtomParser
+    protected anisouParser: AnisouParser
+    protected hetatmParser: HetatmParser
+
+    constructor(excludeDummy: boolean = true) {
+        super()
+        this.atomParer = new AtomParser()
+        this.anisouParser = new AnisouParser()
+        this.hetatmParser = new HetatmParser(excludeDummy)
+    }
+
+    parse(line: string | string[]): CoordinateSection {
+        this.atomParer.collect(line)
+        this.anisouParser.collect(line)
+        this.hetatmParser.collect(line)
+
+        return {
+            atoms: this.atomParer.parse(),
+            anisous: this.anisouParser.parse(),
+            hetatms: this.hetatmParser.parse(),
+        }
     }
 }

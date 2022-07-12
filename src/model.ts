@@ -9,3 +9,6 @@ export interface ResidueWithAtom extends Residue {
     atom: string | null
     altLoc?: string | null
 }
+
+export interface Section {
+}
