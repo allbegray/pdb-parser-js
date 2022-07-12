@@ -1,8 +1,8 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
-import {Residue} from "../model";
+import {Residue, Section} from "../model";
 
 export interface Dbref extends Dbref1, Dbref2 {
     // idCode: string | null
@@ -374,5 +374,45 @@ export class SeqresParser extends AbstractParser<Seqres[]> {
                 resNames: resNames.filter(it => it) as string[],
             }
         })
+    }
+}
+
+export interface PrimaryStructureSection extends Section {
+    dbrefs: Dbref[]
+    seqadvs: Seqadv[]
+    modress: Modres[]
+    dbref1s: Dbref1[]
+    dbref2s: Dbref2[]
+    seqress: Seqres[]
+}
+
+export class PrimaryStructureSectionParser extends SectionParser<PrimaryStructureSection> {
+    protected dbrefParser = new DbrefParser()
+    protected seqadvParser = new SeqadvParser()
+    protected modresParser = new ModresParser()
+    protected dbref1Parser = new Dbref1Parser()
+    protected dbref2Parser = new Dbref2Parser()
+    protected seqresParser = new SeqresParser()
+
+    protected parsers(): Parser<any>[] {
+        return [
+            this.dbrefParser,
+            this.seqadvParser,
+            this.modresParser,
+            this.dbref1Parser,
+            this.dbref2Parser,
+            this.seqresParser,
+        ]
+    }
+
+    parse(): PrimaryStructureSection {
+        return {
+            dbrefs: this.dbrefParser.parse(),
+            seqadvs: this.seqadvParser.parse(),
+            modress: this.modresParser.parse(),
+            dbref1s: this.dbref1Parser.parse(),
+            dbref2s: this.dbref2Parser.parse(),
+            seqress: this.seqresParser.parse(),
+        }
     }
 }

@@ -1,7 +1,7 @@
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
-import {Residue} from "../model";
+import {Residue, Section} from "../model";
 
 export interface Header {
     classification: string | null
@@ -842,5 +842,85 @@ export class Remark470Parser extends RemarkParser<MissingAtom[]> {
             }
         }
         return missingAtoms
+    }
+}
+
+export interface TitleSection extends Section {
+    header: Header
+    obsltes: Obslte[]
+    title: string | null
+    splits: string[]
+    caveats: Caveat[]
+    compnds: CompndOrSource[]
+    sources: CompndOrSource[]
+    keywdss: string[]
+    expdtas: string[]
+    nummdl: number | null
+    mdltyps: string[]
+    authors: string[]
+    revdats: Revdat[]
+    sprsdes: Sprsde[]
+    missingResidues: MissingResidue[]
+    missingAtoms: MissingAtom[]
+}
+
+export class TitleSectionParser extends SectionParser<TitleSection> {
+    protected headerParser = new HeaderParser()
+    protected obslteParser = new ObslteParser()
+    protected titleParser = new TitleParser()
+    protected splitParser = new SplitParser()
+    protected caveatParser = new CaveatParser()
+    protected compndParser = new CompndParser()
+    protected sourceParser = new SourceParser()
+    protected keywdsParser = new KeywdsParser()
+    protected expdtaParser = new ExpdtaParser()
+    protected nummdlParser = new NummdlParser()
+    protected mdltypParser = new MdltypParser()
+    protected authorParser = new AuthorParser()
+    protected revdatParser = new RevdatParser()
+    protected sprsdeParser = new SprsdeParser()
+    protected remark465Parser = new Remark465Parser()
+    protected remark470Parser = new Remark470Parser()
+
+    protected parsers(): Parser<any>[] {
+        return [
+            this.headerParser,
+            this.obslteParser,
+            this.titleParser,
+            this.splitParser,
+            this.caveatParser,
+            this.compndParser,
+            this.sourceParser,
+            this.keywdsParser,
+            this.expdtaParser,
+            this.nummdlParser,
+            this.mdltypParser,
+            this.authorParser,
+            this.revdatParser,
+            this.sprsdeParser,
+            this.remark465Parser,
+            this.remark470Parser,
+        ]
+    }
+
+    parse(): TitleSection {
+        return {
+            header: this.headerParser.parse(),
+            obsltes: this.obslteParser.parse(),
+            title: this.titleParser.parse(),
+            splits: this.splitParser.parse(),
+            caveats: this.caveatParser.parse(),
+            compnds: this.compndParser.parse(),
+            sources: this.sourceParser.parse(),
+            keywdss: this.keywdsParser.parse(),
+            expdtas: this.expdtaParser.parse(),
+            nummdl: this.nummdlParser.parse(),
+            mdltyps: this.mdltypParser.parse(),
+            authors: this.authorParser.parse(),
+            revdats: this.revdatParser.parse(),
+            sprsdes: this.sprsdeParser.parse(),
+            missingResidues: this.remark465Parser.parse(),
+            missingAtoms: this.remark470Parser.parse(),
+        }
     }
 }

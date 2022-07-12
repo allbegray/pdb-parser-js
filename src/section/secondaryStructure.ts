@@ -1,8 +1,8 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
-import {Residue, ResidueWithAtom} from "../model";
+import {Residue, ResidueWithAtom, Section} from "../model";
 
 /***
  * https://www.wwpdb.org/documentation/file-format-content/format33/sect5.html#HELIX
@@ -242,5 +242,29 @@ export class SheetParser extends AbstractParser<Sheet[]> {
                 },
             }
         })
+    }
+}
+
+export interface SecondaryStructureSection extends Section {
+    helixs: Helix[]
+    sheets: Sheet[]
+}
+
+export class SecondaryStructureSectionParser extends SectionParser<SecondaryStructureSection> {
+    protected helixParser = new HelixParser()
+    protected sheetParser = new SheetParser()
+
+    protected parsers(): Parser<any>[] {
+        return [
+            this.helixParser,
+            this.sheetParser,
+        ]
+    }
+
+    parse(): SecondaryStructureSection {
+        return {
+            helixs: this.helixParser.parse(),
+            sheets: this.sheetParser.parse(),
+        }
     }
 }

@@ -1,7 +1,8 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
+import {Section} from "../model";
 
 export interface Het {
     hetID: string | null
@@ -184,5 +185,32 @@ export class FormulParser extends AbstractParser<Formul[]> {
                 text
             }
         })
+    }
+}
+
+export interface HeterogenSection extends Section {
+    hets: Het[]
+    hetnams: Hetnam[]
+    hetsyns: Hetsyn[]
+    formuls: Formul[]
+}
+
+export class ConnectivityAnnotationSectionParser extends SectionParser<HeterogenSection> {
+    protected hetParser = new HetParser()
+    protected hetnamParser = new HetnamParser()
+    protected hetsynParser = new HetsynParser()
+    protected formulParser = new FormulParser()
+
+    protected parsers(): Parser<any>[] {
+        return [this.hetParser, this.hetnamParser, this.hetsynParser, this.formulParser]
+    }
+
+    parse(): HeterogenSection {
+        return {
+            hets: this.hetParser.parse(),
+            hetnams: this.hetnamParser.parse(),
+            hetsyns: this.hetsynParser.parse(),
+            formuls: this.formulParser.parse(),
+        }
     }
 }

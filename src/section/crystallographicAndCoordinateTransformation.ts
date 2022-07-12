@@ -1,7 +1,8 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
+import {Section} from "../model";
 
 export interface Cryst1 {
     a: number | null
@@ -195,5 +196,37 @@ export class MtrixParser extends AbstractParser<Mtrix[]> {
                 iGiven: toIntOrNull(iGiven),
             }
         })
+    }
+}
+
+export interface CrystallographicAndCoordinateTransformationSection extends Section {
+    cryst1: Cryst1 | null
+    origxs: Origx[]
+    scales: Scale[]
+    mtrixs: Mtrix[]
+}
+
+export class CrystallographicAndCoordinateTransformationSectionParser extends SectionParser<CrystallographicAndCoordinateTransformationSection> {
+    protected cryst1Parser = new Cryst1Parser()
+    protected origxParser = new OrigxParser()
+    protected scaleParser = new ScaleParser()
+    protected mtrixParser = new MtrixParser()
+
+    protected parsers(): Parser<any>[] {
+        return [
+            this.cryst1Parser,
+            this.origxParser,
+            this.scaleParser,
+            this.mtrixParser,
+        ]
+    }
+
+    parse(): CrystallographicAndCoordinateTransformationSection {
+        return {
+            cryst1: this.cryst1Parser.parse(),
+            origxs: this.origxParser.parse(),
+            scales: this.scaleParser.parse(),
+            mtrixs: this.mtrixParser.parse(),
+        }
     }
 }

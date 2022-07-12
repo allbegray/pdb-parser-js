@@ -1,7 +1,8 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
+import {Section} from "../model";
 
 export interface Master {
     numRemark: number | null
@@ -75,6 +76,24 @@ export class MasterParser extends AbstractParser<Master | null> {
             numTer: toIntOrNull(numTer),
             numConect: toIntOrNull(numConect),
             numSeq: toIntOrNull(numSeq),
+        }
+    }
+}
+
+export interface BookkeepingSection extends Section {
+    master: Master | null
+}
+
+export class BookkeepingSectionParser extends SectionParser<BookkeepingSection> {
+    protected masterParser = new MasterParser()
+
+    protected parsers(): Parser<any>[] {
+        return [this.masterParser]
+    }
+
+    parse(): BookkeepingSection {
+        return {
+            master: this.masterParser.parse(),
         }
     }
 }

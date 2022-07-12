@@ -260,8 +260,8 @@ export interface CoordinateSection extends Section {
 }
 
 export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
-    protected atomParer: AtomParser = new AtomParser()
-    protected anisouParser: AnisouParser = new AnisouParser()
+    protected atomParer = new AtomParser()
+    protected anisouParser = new AnisouParser()
     protected hetatmParser: HetatmParser
 
     constructor(excludeDummy: boolean = true) {
@@ -270,7 +270,7 @@ export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
     }
 
     protected parsers(): Parser<any>[] {
-        return [this.atomParer, this.anisouParser, this.hetatmParser];
+        return [this.atomParer, this.anisouParser, this.hetatmParser]
     }
 
     parse(): CoordinateSection {

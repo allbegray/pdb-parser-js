@@ -1,8 +1,8 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
-import {Residue, ResidueWithAtom} from "../model";
+import {Residue, ResidueWithAtom, Section} from "../model";
 
 export interface Ssbond {
     serNum: number | null
@@ -240,5 +240,29 @@ export class CispepParser extends AbstractParser<Cispep[]> {
                 measure: toFloatOrNull(measure),
             }
         })
+    }
+}
+
+export interface ConnectivityAnnotationSection extends Section {
+    ssbonds: Ssbond[]
+    links: Link[]
+    cispeps: Cispep[]
+}
+
+export class ConnectivityAnnotationSectionParser extends SectionParser<ConnectivityAnnotationSection> {
+    protected ssbondParser = new SsbondParser()
+    protected linkParser = new LinkParser()
+    protected cispepParser = new CispepParser()
+
+    protected parsers(): Parser<any>[] {
+        return [this.ssbondParser, this.linkParser, this.cispepParser]
+    }
+
+    parse(): ConnectivityAnnotationSection {
+        return {
+            ssbonds: this.ssbondParser.parse(),
+            links: this.linkParser.parse(),
+            cispeps: this.cispepParser.parse(),
+        }
     }
 }

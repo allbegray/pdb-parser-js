@@ -1,7 +1,8 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toIntOrNull} from "../extension/string";
+import {Section} from "../model";
 
 export interface Conect {
     atomSeqNum: number
@@ -39,5 +40,23 @@ export class ConectParser extends AbstractParser<Conect[]> {
                 bondedAtomSeqNums: bondedAtomSeqNums.filter(it => it).map(it => toIntOrNull(it)!) as number[]
             }
         })
+    }
+}
+
+export interface ConnectivitySection extends Section {
+    conects: Conect[]
+}
+
+export class CoordinateSectionParser extends SectionParser<ConnectivitySection> {
+    protected conectParser = new ConectParser()
+
+    protected parsers(): Parser<any>[] {
+        return [this.conectParser]
+    }
+
+    parse(): ConnectivitySection {
+        return {
+            conects: this.conectParser.parse(),
+        }
     }
 }

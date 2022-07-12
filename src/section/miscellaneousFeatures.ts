@@ -1,7 +1,7 @@
 // 100%
 import '../extension/string';
-import {AbstractParser} from "../parser";
-import {Residue} from "../model";
+import {AbstractParser, Parser, SectionParser} from "../parser";
+import {Residue, Section} from "../model";
 import {toIntOrNull} from "../extension/string";
 import {Pair} from "../tuple";
 
@@ -130,5 +130,23 @@ export class SiteParser extends AbstractParser<Site[]> {
             }
         }
         return true
+    }
+}
+
+export interface MiscellaneousFeaturesSection extends Section {
+    sites: Site[]
+}
+
+export class MiscellaneousFeaturesSectionParser extends SectionParser<MiscellaneousFeaturesSection> {
+    protected siteParser = new SiteParser()
+
+    protected parsers(): Parser<any>[] {
+        return [this.siteParser]
+    }
+
+    parse(): MiscellaneousFeaturesSection {
+        return {
+            sites: this.siteParser.parse(),
+        }
     }
 }
