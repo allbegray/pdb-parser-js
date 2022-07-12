@@ -261,22 +261,23 @@ export interface CoordinateSection extends Section {
 
 export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
     protected atomParer = new AtomParser()
-    protected anisouParser = new AnisouParser()
+    protected anisouParser: AnisouParser | null
     protected hetatmParser: HetatmParser
 
-    constructor(excludeDummy: boolean = true) {
+    constructor(excludeDummy: boolean = true, excludeAnisou: boolean = true) {
         super()
         this.hetatmParser = new HetatmParser(excludeDummy)
+        this.anisouParser = excludeAnisou ? null : new AnisouParser()
     }
 
     protected parsers(): Parser<any>[] {
-        return [this.atomParer, this.anisouParser, this.hetatmParser]
+        return [this.atomParer, this.anisouParser, this.hetatmParser].filter(it => it) as Parser<any>[]
     }
 
     parse(): CoordinateSection {
         return {
             atoms: this.atomParer.parse(),
-            anisous: this.anisouParser.parse(),
+            anisous: this.anisouParser?.parse() ?? [],
             hetatms: this.hetatmParser.parse(),
         }
     }

@@ -39,20 +39,20 @@ export class Pdb {
 }
 
 export class PdbParser extends SectionParser<Pdb> {
-    titleSectionParser = new TitleSectionParser()
-    primaryStructureSectionParser = new PrimaryStructureSectionParser()
-    heterogenSectionParser = new HeterogenSectionParser()
-    secondaryStructureSectionParser = new SecondaryStructureSectionParser()
-    connectivityAnnotationSectionParser = new ConnectivityAnnotationSectionParser()
-    miscellaneousFeaturesSectionParser = new MiscellaneousFeaturesSectionParser()
-    crystallographicAndCoordinateTransformationSectionParser = new CrystallographicAndCoordinateTransformationSectionParser()
-    coordinateSectionParser: CoordinateSectionParser
-    connectivitySectionParser = new ConnectivitySectionParser()
-    bookkeepingSectionParser = new BookkeepingSectionParser()
+    protected titleSectionParser = new TitleSectionParser()
+    protected primaryStructureSectionParser = new PrimaryStructureSectionParser()
+    protected heterogenSectionParser = new HeterogenSectionParser()
+    protected secondaryStructureSectionParser = new SecondaryStructureSectionParser()
+    protected connectivityAnnotationSectionParser = new ConnectivityAnnotationSectionParser()
+    protected miscellaneousFeaturesSectionParser = new MiscellaneousFeaturesSectionParser()
+    protected crystallographicAndCoordinateTransformationSectionParser = new CrystallographicAndCoordinateTransformationSectionParser()
+    protected coordinateSectionParser: CoordinateSectionParser
+    protected connectivitySectionParser = new ConnectivitySectionParser()
+    protected bookkeepingSectionParser = new BookkeepingSectionParser()
 
-    constructor(excludeDummy: boolean = true) {
+    constructor(excludeDummy: boolean = true, excludeAnisou: boolean = true) {
         super();
-        this.coordinateSectionParser = new CoordinateSectionParser(excludeDummy)
+        this.coordinateSectionParser = new CoordinateSectionParser(excludeDummy, excludeAnisou)
     }
 
     protected parsers(): Parser<any>[] {
