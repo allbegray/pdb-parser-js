@@ -260,14 +260,12 @@ export interface CoordinateSection extends Section {
 }
 
 export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
-    protected atomParer: AtomParser
-    protected anisouParser: AnisouParser
+    protected atomParer: AtomParser = new AtomParser()
+    protected anisouParser: AnisouParser = new AnisouParser()
     protected hetatmParser: HetatmParser
 
     constructor(excludeDummy: boolean = true) {
         super()
-        this.atomParer = new AtomParser()
-        this.anisouParser = new AnisouParser()
         this.hetatmParser = new HetatmParser(excludeDummy)
     }
 
