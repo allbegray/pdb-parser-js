@@ -1,5 +1,5 @@
 import '../extension/string';
-import {AbstractParser, SectionParser} from "../parser";
+import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
 import {Residue, ResidueWithAtom, Section} from "../model";
 
@@ -271,11 +271,11 @@ export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
         this.hetatmParser = new HetatmParser(excludeDummy)
     }
 
-    parse(line: string | string[]): CoordinateSection {
-        this.atomParer.collect(line)
-        this.anisouParser.collect(line)
-        this.hetatmParser.collect(line)
+    protected parsers(): Parser<any>[] {
+        return [this.atomParer, this.anisouParser, this.hetatmParser];
+    }
 
+    parse(): CoordinateSection {
         return {
             atoms: this.atomParer.parse(),
             anisous: this.anisouParser.parse(),

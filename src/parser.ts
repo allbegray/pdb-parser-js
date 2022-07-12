@@ -1,7 +1,7 @@
 import {Section} from "./model";
 
 export interface Parser<T> {
-    collect(line: string): void
+    collect(line: string | string[]): void
 
     parse(): T
 }
@@ -40,7 +40,23 @@ export abstract class AbstractParser<T> implements Parser<T> {
     }
 }
 
-export abstract class SectionParser<T extends Section> {
+export abstract class SectionParser<T extends Section> implements Parser<T> {
 
-    abstract parse(line: string | string[]): T
+    protected abstract parsers(): Parser<any>[]
+
+    collect(line: string | string[]) {
+        if (Array.isArray(line)) {
+            for (const l of line) {
+                for (const p of this.parsers()) {
+                    p.collect(l)
+                }
+            }
+        } else {
+            for (const p of this.parsers()) {
+                p.collect(line)
+            }
+        }
+    }
+
+    abstract parse(): T
 }
