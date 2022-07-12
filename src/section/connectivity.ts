@@ -47,7 +47,7 @@ export interface ConnectivitySection extends Section {
     conects: Conect[]
 }
 
-export class CoordinateSectionParser extends SectionParser<ConnectivitySection> {
+export class ConnectivitySectionParser extends SectionParser<ConnectivitySection> {
     protected conectParser = new ConectParser()
 
     protected parsers(): Parser<any>[] {

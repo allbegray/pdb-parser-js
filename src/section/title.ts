@@ -469,7 +469,8 @@ export class KeywdsParser extends AbstractParser<string[]> {
             .filter(it => it)
             .join('')
             .split(",")
-            .map(it => it.trim()) as string[]
+            .map(it => it.trim())
+            .filter(it => it) as string[]
     }
 }
 
@@ -555,7 +556,8 @@ export class AuthorParser extends AbstractParser<string[]> {
             .filter(it => it)
             .join('')
             .split(",")
-            .map(it => it.trim()) as string[]
+            .map(it => it.trim())
+            .filter(it => it) as string[]
     }
 }
 

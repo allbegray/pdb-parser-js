@@ -195,7 +195,7 @@ export interface HeterogenSection extends Section {
     formuls: Formul[]
 }
 
-export class ConnectivityAnnotationSectionParser extends SectionParser<HeterogenSection> {
+export class HeterogenSectionParser extends SectionParser<HeterogenSection> {
     protected hetParser = new HetParser()
     protected hetnamParser = new HetnamParser()
     protected hetsynParser = new HetsynParser()
