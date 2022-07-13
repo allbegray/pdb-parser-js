@@ -1,7 +1,7 @@
 {
   "name": "pdb-parser-js",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "PDB(Protein Data Bank) file format parser.",
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node src",
@@ -9,8 +9,9 @@
     "test": "jest"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "allbegray <allbegray@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/allbegray/pdb-parser-js",
   "devDependencies": {
     "@babel/preset-env": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
