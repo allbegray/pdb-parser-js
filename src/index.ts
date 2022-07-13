@@ -1,6 +1,6 @@
 import {PdbParser} from "./pdb"
 import {BookkeepingSectionParser, MasterParser} from "./section/bookkeeping"
-import {ConnectivitySectionParser, ConectParser} from "./section/connectivity"
+import {ConectParser, ConnectivitySectionParser} from "./section/connectivity"
 import {
     CispepParser,
     ConnectivityAnnotationSectionParser,
@@ -10,25 +10,40 @@ import {
 import {AnisouParser, AtomParser, CoordinateSectionParser, HetatmParser} from "./section/coordinate"
 import {
     Cryst1Parser,
-    CrystallographicAndCoordinateTransformationSectionParser, MtrixParser, OrigxParser, ScaleParser
+    CrystallographicAndCoordinateTransformationSectionParser,
+    MtrixParser,
+    OrigxParser,
+    ScaleParser
 } from "./section/crystallographicAndCoordinateTransformation"
 import {FormulParser, HeterogenSectionParser, HetnamParser, HetParser, HetsynParser} from "./section/heterogen"
 import {MiscellaneousFeaturesSectionParser, SiteParser} from "./section/miscellaneousFeatures"
 import {
-    Dbref1Parser, Dbref2Parser,
+    Dbref1Parser,
+    Dbref2Parser,
     DbrefParser,
     ModresParser,
     PrimaryStructureSectionParser,
-    SeqadvParser, SeqresParser
+    SeqadvParser,
+    SeqresParser
 } from "./section/primaryStructure"
 import {HelixParser, SecondaryStructureSectionParser, SheetParser} from "./section/secondaryStructure"
 import {
     AuthorParser,
     CaveatParser,
-    CompndParser, ExpdtaParser,
-    HeaderParser, KeywdsParser, MdltypParser, NummdlParser,
-    ObslteParser, Remark465Parser, Remark470Parser, RevdatParser, SourceParser,
-    SplitParser, SprsdeParser, RemarkParser,
+    CompndParser,
+    ExpdtaParser,
+    HeaderParser,
+    KeywdsParser,
+    MdltypParser,
+    NummdlParser,
+    ObslteParser,
+    Remark465Parser,
+    Remark470Parser,
+    RemarkParser,
+    RevdatParser,
+    SourceParser,
+    SplitParser,
+    SprsdeParser,
     TitleParser,
     TitleSectionParser
 } from "./section/title"
