@@ -16,10 +16,11 @@
       "./node_modules/@types",
       "@types"
     ],
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    }
+//    "baseUrl": "./",
+//    "paths": {
+//      "@/*": [
+//        "src/*"
+//      ]
+//    }
   }
 }
