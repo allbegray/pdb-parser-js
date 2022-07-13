@@ -20,17 +20,34 @@ export interface Dbref extends Dbref1, Dbref2 {
     dbinsEnd: string | null
 }
 
-export interface Seqadv extends Residue {
+class Seqadv implements Residue {
     idCode: string | null
-    // resName: string | null
-    // chainID: string | null
-    // seqNum: number | null
-    // iCode: string | null
+    resName: string | null
+    chainID: string | null
+    resSeq: number | null
+    iCode: string | null
     database: string | null
     dbAccession: string | null
     dbRes: string | null
     dbSeq: number | null
     conflict: string | null
+
+    constructor(idCode: string | null, resName: string | null, chainID: string | null, resSeq: number | null, iCode: string | null, database: string | null, dbAccession: string | null, dbRes: string | null, dbSeq: number | null, conflict: string | null) {
+        this.idCode = idCode;
+        this.resName = resName;
+        this.chainID = chainID;
+        this.resSeq = resSeq;
+        this.iCode = iCode;
+        this.database = database;
+        this.dbAccession = dbAccession;
+        this.dbRes = dbRes;
+        this.dbSeq = dbSeq;
+        this.conflict = conflict;
+    }
+
+    isMutation(): boolean {
+        return this.conflict == 'ENGINEERED MUTATION'
+    }
 }
 
 export interface Modres extends Residue {
@@ -170,18 +187,18 @@ export class SeqadvParser extends AbstractParser<Seqadv[]> {
             const dbSeq = line.extract(44, 48)
             const conflict = line.extract(50, 70)
 
-            return {
+            return new Seqadv(
                 idCode,
                 resName,
                 chainID,
-                resSeq: toIntOrNull(seqNum),
+                toIntOrNull(seqNum),
                 iCode,
                 database,
                 dbAccession,
                 dbRes,
-                dbSeq: toIntOrNull(dbSeq),
+                toIntOrNull(dbSeq),
                 conflict
-            }
+            )
         })
     }
 }
