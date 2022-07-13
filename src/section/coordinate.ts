@@ -233,7 +233,7 @@ export class AnisouParser extends AbstractParser<Anisou[]> {
 export class HetatmParser extends AbstractParser<Hetatm[]> {
     protected excludeDummy: boolean
 
-    constructor(excludeDummy: boolean = true) {
+    constructor(excludeDummy = true) {
         super()
         this.excludeDummy = excludeDummy
     }
@@ -264,7 +264,7 @@ export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
     protected anisouParser: AnisouParser | null
     protected hetatmParser: HetatmParser
 
-    constructor(excludeDummy: boolean = true, excludeAnisou: boolean = true) {
+    constructor(excludeDummy = true, excludeAnisou = true) {
         super()
         this.hetatmParser = new HetatmParser(excludeDummy)
         this.anisouParser = excludeAnisou ? null : new AnisouParser()

@@ -262,7 +262,7 @@ abstract class CompndOrSourceParser extends AbstractParser<CompndOrSource[]> {
         for (const line of lines) {
             if (!line) continue
 
-            let findToken = this.isTokenBegin(line)
+            const findToken = this.isTokenBegin(line);
             if (findToken) {
                 fixedLines.push(line)
             } else {
@@ -272,7 +272,7 @@ abstract class CompndOrSourceParser extends AbstractParser<CompndOrSource[]> {
 
         const results: CompndOrSource[] = []
         let compnd: CompndOrSource | null = null
-        for (let fixedLine of fixedLines) {
+        for (const fixedLine of fixedLines) {
             if (fixedLine.startsWith('MOL_ID:')) {
                 if (compnd != null) {
                     results.push(compnd)
@@ -583,7 +583,7 @@ export class AuthorParser extends AbstractParser<string[]> {
 export class RevdatParser extends AbstractParser<Revdat[]> {
     protected sortDesc: boolean
 
-    constructor(sortDesc: boolean = true) {
+    constructor(sortDesc = true) {
         super();
         this.sortDesc = sortDesc
     }

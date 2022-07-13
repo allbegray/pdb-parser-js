@@ -50,7 +50,7 @@ export class PdbParser extends SectionParser<Pdb> {
     protected connectivitySectionParser = new ConnectivitySectionParser()
     protected bookkeepingSectionParser = new BookkeepingSectionParser()
 
-    constructor(excludeDummy: boolean = true, excludeAnisou: boolean = true) {
+    constructor(excludeDummy = true, excludeAnisou = true) {
         super();
         this.coordinateSectionParser = new CoordinateSectionParser(excludeDummy, excludeAnisou)
     }

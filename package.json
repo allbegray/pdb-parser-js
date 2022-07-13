@@ -8,6 +8,7 @@
     "dev": "ts-node src",
     "build": "tsc && node dist",
     "test": "jest",
+    "lint": "eslint .",
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
@@ -23,6 +24,10 @@
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^28.1.4",
     "@types/node": "^18.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.30.6",
+    "@typescript-eslint/parser": "^5.30.6",
+    "eslint": "^8.19.0",
+    "eslint-plugin-jest": "^26.5.3",
     "jest": "^28.1.2",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.2",
