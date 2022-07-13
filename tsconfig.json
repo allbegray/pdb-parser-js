@@ -6,7 +6,7 @@
     "node_modules"
   ],
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNext",
     "module": "commonjs",
     "declaration": true,
     "rootDir": "src",
