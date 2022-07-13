@@ -701,7 +701,7 @@ export class SprsdeParser extends AbstractParser<Sprsde[]> {
  * 12 - 79       LString       empty         Left  as white space in first line
  *                                           of each  new remark.
  */
-abstract class RemarkParser<T> extends AbstractParser<T> {
+export abstract class RemarkParser<T> extends AbstractParser<T> {
 
     protected abstract readonly remarkNum: number
 
