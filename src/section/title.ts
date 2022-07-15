@@ -2,6 +2,7 @@ import '../extension/string';
 import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
 import {Residue, Section} from "../model";
+import {Matrix4} from "three";
 
 export interface Header {
     classification: string | null
@@ -41,7 +42,7 @@ export interface Sprsde {
 export interface Remark350 {
     biomolecule: number | null
     chains: string[]
-    biomts: [number | null, number | null, number | null, number | null]
+    biomts: Matrix4[]
 }
 
 /***
@@ -752,14 +753,15 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
 
         let biomolecule: number | null = null
         const chains: string[] = []
-        let biomts: [number | null, number | null, number | null, number | null] = [null, null, null, null]
+        let biomts: Matrix4[] = []
+        let currentMatrix: Matrix4 | null = null
 
         for (const line of this.lines) {
             if (line.extract(11, 23) == 'BIOMOLECULE:') {
                 if (biomolecule != null) {
                     remark350s.push({biomolecule, chains: [...chains], biomts: [...biomts]})
                     chains.length = 0
-                    biomts = [null, null, null, null]
+                    biomts = []
                 }
                 biomolecule = toIntOrNull(line.extract(24))!
             }
@@ -774,11 +776,19 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
                     })
             }
             if (line.extract(14, 18) == 'BIOMT') {
-                const biomt = line.split(/\s+/)
-                biomts[0] = toFloatOrNull(biomt[4])
-                biomts[1] = toFloatOrNull(biomt[5])
-                biomts[2] = toFloatOrNull(biomt[6])
-                biomts[3] = toFloatOrNull(biomt[7])
+                const split = line.split(/\s+/)
+
+                const row = toIntOrNull(line.extract(19, 19))! - 1
+                if (row == 0) {
+                    currentMatrix = new Matrix4()
+                    biomts.push(currentMatrix)
+                }
+
+                const elements = currentMatrix!!.elements
+                elements[4 * 0 + row] = toFloatOrNull(split[4])!
+                elements[4 * 1 + row] = toFloatOrNull(split[5])!
+                elements[4 * 2 + row] = toFloatOrNull(split[6])!
+                elements[4 * 3 + row] = toFloatOrNull(split[7])!
             }
         }
         remark350s.push({biomolecule, chains: [...chains], biomts: [...biomts]})

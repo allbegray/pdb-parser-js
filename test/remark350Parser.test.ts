@@ -1,5 +1,26 @@
 import {Remark350Parser} from "../src/section/title";
 
+test('REMARK 350 추출 매트릭스', () => {
+
+    const pdb = `
+REMARK 350 BIOMOLECULE: 1                                                                     
+REMARK 350 APPLY THE FOLLOWING TO CHAINS: A                                     
+REMARK 350   BIOMT1   1  1.000000  0.000000  0.000000        0.00000            
+REMARK 350   BIOMT2   1  0.000000  1.000000  0.000000        0.00000            
+REMARK 350   BIOMT3   1  0.000000  0.000000  1.000000        0.00000            
+REMARK 350   BIOMT1   2  0.000000 -1.000000  0.000000        0.00000            
+REMARK 350   BIOMT2   2 -1.000000  0.000000  0.000000        0.00000            
+REMARK 350   BIOMT3   2  0.000000  0.000000 -1.000000      -77.63000            `
+
+    const parser = new Remark350Parser()
+    pdb.split('\n').forEach(line => {
+        parser.collect(line)
+    })
+    const result = parser.parse()
+
+    console.log(result)
+});
+
 test('REMARK 350 추출 simple', () => {
 
     const pdb = `
