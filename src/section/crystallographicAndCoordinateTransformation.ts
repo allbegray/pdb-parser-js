@@ -41,7 +41,6 @@ export interface Mtrix {
     iGiven: number | null
 }
 
-
 /***
  * COLUMNS       DATA  TYPE    FIELD          DEFINITION
  * -------------------------------------------------------------

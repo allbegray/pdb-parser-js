@@ -2,7 +2,6 @@ import '../extension/string';
 import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
 import {Residue, Section} from "../model";
-import {Matrix4} from "three";
 
 export interface Header {
     classification: string | null
@@ -43,7 +42,16 @@ export interface Remark350 {
     biomolecule: number | null
     biologicalUnit: string | null
     chains: string[]
-    biomts: Matrix4[]
+    biomts: Biomt[]
+}
+
+interface Biomt {
+    recordName: string | null
+    serial: number
+    Mn1: number | null
+    Mn2: number | null
+    Mn3: number | null
+    Vn: number | null
 }
 
 /***
@@ -755,8 +763,7 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
         let biomolecule: number | null = null
         let biologicalUnit: string | null = null
         const chains: string[] = []
-        let biomts: Matrix4[] = []
-        let currentMatrix: Matrix4 | null = null
+        const biomts: Biomt[] = []
 
         for (const line of this.lines) {
             if (line.extract(11, 23) == 'BIOMOLECULE:') {
@@ -764,7 +771,7 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
                     remark350s.push({biomolecule, biologicalUnit, chains: [...chains], biomts: [...biomts]})
                     biologicalUnit = null
                     chains.length = 0
-                    biomts = []
+                    biomts.length = 0
                 }
                 biomolecule = toIntOrNull(line.extract(24))!
             }
@@ -783,18 +790,14 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
             }
             if (line.extract(14, 18) == 'BIOMT') {
                 const split = line.split(/\s+/)
-
-                const row = toIntOrNull(line.extract(19, 19))! - 1
-                if (row == 0) {
-                    currentMatrix = new Matrix4()
-                    biomts.push(currentMatrix)
-                }
-
-                const elements = currentMatrix!!.elements
-                elements[4 * 0 + row] = toFloatOrNull(split[4])!
-                elements[4 * 1 + row] = toFloatOrNull(split[5])!
-                elements[4 * 2 + row] = toFloatOrNull(split[6])!
-                elements[4 * 3 + row] = toFloatOrNull(split[7])!
+                biomts.push({
+                    recordName: split[2],
+                    serial: toIntOrNull(split[3])!,
+                    Mn1: toFloatOrNull(split[4])!,
+                    Mn2: toFloatOrNull(split[5])!,
+                    Mn3: toFloatOrNull(split[6])!,
+                    Vn: toFloatOrNull(split[7])!,
+                })
             }
         }
         remark350s.push({biomolecule, biologicalUnit, chains: [...chains], biomts: [...biomts]})

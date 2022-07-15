@@ -5,7 +5,8 @@ import {SecondaryStructureSection, SecondaryStructureSectionParser} from "./sect
 import {ConnectivityAnnotationSection, ConnectivityAnnotationSectionParser} from "./section/connectivityAnnotation";
 import {MiscellaneousFeaturesSection, MiscellaneousFeaturesSectionParser} from "./section/miscellaneousFeatures";
 import {
-    CrystallographicAndCoordinateTransformationSection, CrystallographicAndCoordinateTransformationSectionParser
+    CrystallographicAndCoordinateTransformationSection,
+    CrystallographicAndCoordinateTransformationSectionParser
 } from "./section/crystallographicAndCoordinateTransformation";
 import {CoordinateSection, CoordinateSectionParser} from "./section/coordinate";
 import {ConnectivitySection, ConnectivitySectionParser} from "./section/connectivity";
