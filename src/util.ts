@@ -1,11 +1,13 @@
 import {Matrix4} from "three";
 import {Matrixable} from "./model";
 
-export function toMatrix4(items: Matrixable[]): Matrix4 {
+export function toMatrix4(items: [Matrixable, Matrixable, Matrixable, Matrixable?]): Matrix4 {
     const matrix4 = new Matrix4()
     const elements = matrix4.elements
     for (let i = 0; i < items.length; i++) {
         const item = items[i]
+        if (item == undefined) continue
+
         const point4D = item.toPoint4D()
 
         // noinspection PointlessArithmeticExpressionJS
