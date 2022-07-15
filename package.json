@@ -1,6 +1,6 @@
 {
   "name": "pdb-parser-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "PDB(Protein Data Bank) file format parser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
