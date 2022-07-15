@@ -41,6 +41,7 @@ export interface Sprsde {
 
 export interface Remark350 {
     biomolecule: number | null
+    biologicalUnit: string | null
     chains: string[]
     biomts: Matrix4[]
 }
@@ -752,6 +753,7 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
         const remark350s: Remark350[] = []
 
         let biomolecule: number | null = null
+        let biologicalUnit: string | null = null
         const chains: string[] = []
         let biomts: Matrix4[] = []
         let currentMatrix: Matrix4 | null = null
@@ -759,11 +761,15 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
         for (const line of this.lines) {
             if (line.extract(11, 23) == 'BIOMOLECULE:') {
                 if (biomolecule != null) {
-                    remark350s.push({biomolecule, chains: [...chains], biomts: [...biomts]})
+                    remark350s.push({biomolecule, biologicalUnit, chains: [...chains], biomts: [...biomts]})
+                    biologicalUnit = null
                     chains.length = 0
                     biomts = []
                 }
                 biomolecule = toIntOrNull(line.extract(24))!
+            }
+            if (line.extract(12, 45) == 'AUTHOR DETERMINED BIOLOGICAL UNIT:') {
+                biologicalUnit = line.extract(47)
             }
             if (line.extract(12, 41) == 'APPLY THE FOLLOWING TO CHAINS:' || line.extract(12, 41) == 'AND CHAINS:') {
                 line.extract(43)
@@ -791,7 +797,7 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
                 elements[4 * 3 + row] = toFloatOrNull(split[7])!
             }
         }
-        remark350s.push({biomolecule, chains: [...chains], biomts: [...biomts]})
+        remark350s.push({biomolecule, biologicalUnit, chains: [...chains], biomts: [...biomts]})
 
         return remark350s
     }
