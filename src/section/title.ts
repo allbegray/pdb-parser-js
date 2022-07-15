@@ -1,7 +1,7 @@
 import '../extension/string';
 import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
-import {Residue, Section} from "../model";
+import {Matrixable, Point4D, Residue, Section} from "../model";
 
 export interface Header {
     classification: string | null
@@ -45,13 +45,26 @@ export interface Remark350 {
     biomts: Biomt[]
 }
 
-interface Biomt {
+export class Biomt implements Matrixable {
     recordName: string | null
     serial: number
     Mn1: number | null
     Mn2: number | null
     Mn3: number | null
     Vn: number | null
+
+    constructor(recordName: string | null, serial: number, Mn1: number | null, Mn2: number | null, Mn3: number | null, Vn: number | null) {
+        this.recordName = recordName;
+        this.serial = serial;
+        this.Mn1 = Mn1;
+        this.Mn2 = Mn2;
+        this.Mn3 = Mn3;
+        this.Vn = Vn;
+    }
+
+    toPoint4D(): Point4D {
+        return [this.Mn1, this.Mn2, this.Mn3, this.Vn]
+    }
 }
 
 /***
@@ -790,14 +803,14 @@ export class Remark350Parser extends RemarkParser<Remark350[]> {
             }
             if (line.extract(14, 18) == 'BIOMT') {
                 const split = line.split(/\s+/)
-                biomts.push({
-                    recordName: split[2],
-                    serial: toIntOrNull(split[3])!,
-                    Mn1: toFloatOrNull(split[4])!,
-                    Mn2: toFloatOrNull(split[5])!,
-                    Mn3: toFloatOrNull(split[6])!,
-                    Vn: toFloatOrNull(split[7])!,
-                })
+                biomts.push(new Biomt(
+                    split[2],
+                    toIntOrNull(split[3])!,
+                    toFloatOrNull(split[4]),
+                    toFloatOrNull(split[5]),
+                    toFloatOrNull(split[6]),
+                    toFloatOrNull(split[7]),
+                ))
             }
         }
         remark350s.push({biomolecule, biologicalUnit, chains: [...chains], biomts: [...biomts]})

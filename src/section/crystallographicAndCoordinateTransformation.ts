@@ -2,7 +2,7 @@
 import '../extension/string';
 import {AbstractParser, Parser, SectionParser} from "../parser";
 import {toFloatOrNull, toIntOrNull} from "../extension/string";
-import {Section} from "../model";
+import {Matrixable, Point4D, Section} from "../model";
 
 export interface Cryst1 {
     a: number | null
@@ -15,23 +15,47 @@ export interface Cryst1 {
     z: number | null
 }
 
-export interface Origx {
+export class Origx implements Matrixable {
     recordName: string
     On1: number | null
     On2: number | null
     On3: number | null
     Tn: number | null
+
+    constructor(recordName: string, On1: number | null, On2: number | null, On3: number | null, Tn: number | null) {
+        this.recordName = recordName;
+        this.On1 = On1;
+        this.On2 = On2;
+        this.On3 = On3;
+        this.Tn = Tn;
+    }
+
+    toPoint4D(): Point4D {
+        return [this.On1, this.On2, this.On3, this.Tn]
+    }
 }
 
-export interface Scale {
+export class Scale implements Matrixable {
     recordName: string
     Sn1: number | null
     Sn2: number | null
     Sn3: number | null
     Un: number | null
+
+    constructor(recordName: string, Sn1: number | null, Sn2: number | null, Sn3: number | null, Un: number | null) {
+        this.recordName = recordName;
+        this.Sn1 = Sn1;
+        this.Sn2 = Sn2;
+        this.Sn3 = Sn3;
+        this.Un = Un;
+    }
+
+    toPoint4D(): Point4D {
+        return [this.Sn1, this.Sn2, this.Sn3, this.Un]
+    }
 }
 
-export interface Mtrix {
+export class Mtrix implements Matrixable {
     recordName: string
     serial: number | null
     Mn1: number | null
@@ -39,6 +63,20 @@ export interface Mtrix {
     Mn3: number | null
     Vn: number | null
     iGiven: number | null
+
+    constructor(recordName: string, serial: number | null, Mn1: number | null, Mn2: number | null, Mn3: number | null, Vn: number | null, iGiven: number | null) {
+        this.recordName = recordName;
+        this.serial = serial;
+        this.Mn1 = Mn1;
+        this.Mn2 = Mn2;
+        this.Mn3 = Mn3;
+        this.Vn = Vn;
+        this.iGiven = iGiven;
+    }
+
+    toPoint4D(): Point4D {
+        return [this.Mn1, this.Mn2, this.Mn3, this.Vn]
+    }
 }
 
 /***
@@ -110,13 +148,13 @@ export class OrigxParser extends AbstractParser<Origx[]> {
             const On3 = line.extract(31, 40)
             const Tn = line.extract(46, 55)
 
-            return {
-                recordName: recordName!,
-                On1: toFloatOrNull(On1),
-                On2: toFloatOrNull(On2),
-                On3: toFloatOrNull(On3),
-                Tn: toFloatOrNull(Tn),
-            }
+            return new Origx(
+                recordName!,
+                toFloatOrNull(On1),
+                toFloatOrNull(On2),
+                toFloatOrNull(On3),
+                toFloatOrNull(Tn),
+            )
         })
     }
 }
@@ -144,13 +182,13 @@ export class ScaleParser extends AbstractParser<Scale[]> {
             const Sn3 = line.extract(31, 40)
             const Un = line.extract(46, 55)
 
-            return {
-                recordName: recordName!,
-                Sn1: toFloatOrNull(Sn1),
-                Sn2: toFloatOrNull(Sn2),
-                Sn3: toFloatOrNull(Sn3),
-                Un: toFloatOrNull(Un),
-            }
+            return new Scale(
+                recordName!,
+                toFloatOrNull(Sn1),
+                toFloatOrNull(Sn2),
+                toFloatOrNull(Sn3),
+                toFloatOrNull(Un),
+            )
         })
     }
 }
@@ -185,15 +223,15 @@ export class MtrixParser extends AbstractParser<Mtrix[]> {
             const Vn = line.extract(46, 55)
             const iGiven = line.extract(60, 60)
 
-            return {
-                recordName: recordName!,
-                serial: toIntOrNull(serial),
-                Mn1: toFloatOrNull(Mn1),
-                Mn2: toFloatOrNull(Mn2),
-                Mn3: toFloatOrNull(Mn3),
-                Vn: toFloatOrNull(Vn),
-                iGiven: toIntOrNull(iGiven),
-            }
+            return new Mtrix(
+                recordName!,
+                toIntOrNull(serial),
+                toFloatOrNull(Mn1),
+                toFloatOrNull(Mn2),
+                toFloatOrNull(Mn3),
+                toFloatOrNull(Vn),
+                toIntOrNull(iGiven),
+            )
         })
     }
 }

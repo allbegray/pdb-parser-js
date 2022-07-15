@@ -12,3 +12,9 @@ export interface ResidueWithAtom extends Residue {
 
 export interface Section {
 }
+
+export type Point4D = [number | null, number | null, number | null, number | null]
+
+export interface Matrixable {
+    toPoint4D(): Point4D
+}
