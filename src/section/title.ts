@@ -38,6 +38,12 @@ export interface Sprsde {
     sIdCodes: string[]
 }
 
+export interface Remark4 {
+    idCode: string | null
+    relDate: string | null
+    version: string | null
+}
+
 export interface Remark350 {
     biomolecule: number | null
     biologicalUnit: string | null
@@ -731,7 +737,6 @@ export class SprsdeParser extends AbstractParser<Sprsde[]> {
  *                                           of each  new remark.
  */
 export abstract class RemarkParser<T> extends AbstractParser<T> {
-
     protected abstract readonly remarkNum: number
 
     protected match(line: string): boolean {
@@ -740,6 +745,46 @@ export abstract class RemarkParser<T> extends AbstractParser<T> {
             if (this.remarkNum == remarkNum) return true
         }
         return false
+    }
+}
+
+/***
+ * Template
+ *
+ *          1         2         3         4         5         6         7         8
+ * 12345678901234567890123456789012345678901234567890123456789012345678901234567890
+ * REMARK   4
+ * REMARK   4 XXXX COMPLIES WITH FORMAT V. N.MM, DD-MMM-YY
+ */
+export class Remark4Parser extends RemarkParser<Remark4> {
+    protected readonly remarkNum: number = 4
+
+    protected _parse(): Remark4 {
+        const empty = {
+            idCode: null,
+            relDate: null,
+            version: null,
+        }
+        const bodyIndexOf = 12
+
+        const lines = this.lines
+            .map(it => it.extract(bodyIndexOf))
+            .filter(it => it)
+
+        if (lines.length == 0)
+            return empty
+        const line = lines[0] as string
+
+        const idCode = line.extract(12 - bodyIndexOf, 16 - bodyIndexOf)
+        const version = line.extract(42 - bodyIndexOf, 45 - bodyIndexOf)
+        const relDate = line.extract(48 - bodyIndexOf, 56 - bodyIndexOf)
+
+        return {
+            ...empty,
+            idCode,
+            relDate,
+            version
+        }
     }
 }
 
@@ -967,6 +1012,7 @@ export interface TitleSection extends Section {
     authors: string[]
     revdats: Revdat[]
     sprsdes: Sprsde[]
+    remark4: Remark4
     remark350: Remark350[]
     missingResidues: MissingResidue[]
     missingAtoms: MissingAtom[]
@@ -987,6 +1033,7 @@ export class TitleSectionParser extends SectionParser<TitleSection> {
     protected authorParser = new AuthorParser()
     protected revdatParser = new RevdatParser()
     protected sprsdeParser = new SprsdeParser()
+    protected remark4Parser = new Remark4Parser()
     protected remark350Parser = new Remark350Parser()
     protected remark465Parser = new Remark465Parser()
     protected remark470Parser = new Remark470Parser()
@@ -1007,6 +1054,7 @@ export class TitleSectionParser extends SectionParser<TitleSection> {
             this.authorParser,
             this.revdatParser,
             this.sprsdeParser,
+            this.remark4Parser,
             this.remark350Parser,
             this.remark465Parser,
             this.remark470Parser,
@@ -1029,6 +1077,7 @@ export class TitleSectionParser extends SectionParser<TitleSection> {
             authors: this.authorParser.parse(),
             revdats: this.revdatParser.parse(),
             sprsdes: this.sprsdeParser.parse(),
+            remark4: this.remark4Parser.parse(),
             remark350: this.remark350Parser.parse(),
             missingResidues: this.remark465Parser.parse(),
             missingAtoms: this.remark470Parser.parse(),
