@@ -8,7 +8,7 @@ import {
     CrystallographicAndCoordinateTransformationSection,
     CrystallographicAndCoordinateTransformationSectionParser
 } from "./section/crystallographicAndCoordinateTransformation";
-import {CoordinateSection, CoordinateSectionParser} from "./section/coordinate";
+import {Atom, CoordinateSection, CoordinateSectionParser, Hetatm} from "./section/coordinate";
 import {ConnectivitySection, ConnectivitySectionParser} from "./section/connectivity";
 import {BookkeepingSection, BookkeepingSectionParser} from "./section/bookkeeping";
 import {Parser, SectionParser} from "./parser";
@@ -51,9 +51,14 @@ export class PdbParser extends SectionParser<Pdb> {
     protected connectivitySectionParser = new ConnectivitySectionParser()
     protected bookkeepingSectionParser = new BookkeepingSectionParser()
 
-    constructor(excludeDummy = true, excludeAnisou = true) {
+    constructor(
+        excludeDummy = true,
+        excludeAnisou = true,
+        atomFilter: ((atom: Atom) => boolean) | null = null,
+        hetatmFilter: ((hetatm: Hetatm) => boolean) | null = null,
+    ) {
         super();
-        this.coordinateSectionParser = new CoordinateSectionParser(excludeDummy, excludeAnisou)
+        this.coordinateSectionParser = new CoordinateSectionParser(excludeDummy, excludeAnisou, atomFilter, hetatmFilter)
     }
 
     protected parsers(): Parser<any>[] {

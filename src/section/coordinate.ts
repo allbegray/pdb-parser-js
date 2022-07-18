@@ -45,7 +45,7 @@ interface CoordinateData extends ResidueWithAtom {
 }
 
 abstract class Coordinate {
-    protected data: CoordinateData
+    data: CoordinateData
 
     constructor(data: CoordinateData) {
         this.data = data;
@@ -134,15 +134,30 @@ export interface Endmdl {
  * 79 - 80        LString(2)    charge       Charge  on the atom.
  */
 export class AtomParser extends AbstractParser<Atom[]> {
+    readonly filter: ((atom: Atom) => boolean) | null
+
+    constructor(filter: ((atom: Atom) => boolean) | null = null) {
+        super()
+        this.filter = filter
+    }
 
     protected match(line: string): boolean {
         return line.startsWith('ATOM  ')
     }
 
     protected _parse(): Atom[] {
-        return this.lines.map(line => {
-            return new Atom(Coordinate.lineToCoordinate(line))
-        })
+        const atoms: Atom[] = []
+        for (let line of this.lines) {
+            const atom = new Atom(Coordinate.lineToCoordinate(line))
+            if (this.filter != null) {
+                if (this.filter(atom)) {
+                    atoms.push(atom)
+                }
+            } else {
+                atoms.push(atom)
+            }
+        }
+        return atoms
     }
 }
 
@@ -232,10 +247,12 @@ export class AnisouParser extends AbstractParser<Anisou[]> {
  */
 export class HetatmParser extends AbstractParser<Hetatm[]> {
     protected excludeDummy: boolean
+    readonly filter: ((hetatm: Hetatm) => boolean) | null
 
-    constructor(excludeDummy = true) {
+    constructor(excludeDummy = true, filter: ((hetatm: Hetatm) => boolean) | null = null) {
         super()
         this.excludeDummy = excludeDummy
+        this.filter = filter
     }
 
     protected match(line: string): boolean {
@@ -247,9 +264,18 @@ export class HetatmParser extends AbstractParser<Hetatm[]> {
     }
 
     protected _parse(): Hetatm[] {
-        return this.lines.map(line => {
-            return new Hetatm(Coordinate.lineToCoordinate(line))
-        })
+        const hetatms: Hetatm[] = []
+        for (let line of this.lines) {
+            const hetatm = new Hetatm(Coordinate.lineToCoordinate(line))
+            if (this.filter != null) {
+                if (this.filter(hetatm)) {
+                    hetatms.push(hetatm)
+                }
+            } else {
+                hetatms.push(hetatm)
+            }
+        }
+        return hetatms
     }
 }
 
@@ -260,13 +286,19 @@ export interface CoordinateSection extends Section {
 }
 
 export class CoordinateSectionParser extends SectionParser<CoordinateSection> {
-    protected atomParer = new AtomParser()
+    protected atomParer: AtomParser
     protected anisouParser: AnisouParser | null
     protected hetatmParser: HetatmParser
 
-    constructor(excludeDummy = true, excludeAnisou = true) {
+    constructor(
+        excludeDummy = true,
+        excludeAnisou = true,
+        atomFilter: ((atom: Atom) => boolean) | null = null,
+        hetatmFilter: ((hetatm: Hetatm) => boolean) | null = null
+    ) {
         super()
-        this.hetatmParser = new HetatmParser(excludeDummy)
+        this.atomParer = new AtomParser(atomFilter)
+        this.hetatmParser = new HetatmParser(excludeDummy, hetatmFilter)
         this.anisouParser = excludeAnisou ? null : new AnisouParser()
     }
 
