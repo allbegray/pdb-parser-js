@@ -147,7 +147,7 @@ export class AtomParser extends AbstractParser<Atom[]> {
 
     protected _parse(): Atom[] {
         const atoms: Atom[] = []
-        for (let line of this.lines) {
+        for (const line of this.lines) {
             const atom = new Atom(Coordinate.lineToCoordinate(line))
             if (this.filter != null) {
                 if (this.filter(atom)) {
@@ -265,7 +265,7 @@ export class HetatmParser extends AbstractParser<Hetatm[]> {
 
     protected _parse(): Hetatm[] {
         const hetatms: Hetatm[] = []
-        for (let line of this.lines) {
+        for (const line of this.lines) {
             const hetatm = new Hetatm(Coordinate.lineToCoordinate(line))
             if (this.filter != null) {
                 if (this.filter(hetatm)) {
