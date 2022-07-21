@@ -1,3 +1,4 @@
+import { AminoAcids } from "./model"
 import {PdbParser} from "./pdb"
 import {BookkeepingSectionParser, MasterParser} from "./section/bookkeeping"
 import {ConectParser, ConnectivitySectionParser} from "./section/connectivity"
@@ -112,4 +113,6 @@ export {
 
     BookkeepingSectionParser,
     MasterParser,
+
+    AminoAcids,
 }
